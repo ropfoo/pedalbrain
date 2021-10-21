@@ -2,13 +2,18 @@ import 'dart:async';
 
 import 'dart:math';
 
-class KnobState {
+class KnobData {
   double rotation = pi;
+  String label = 'unnamed';
+}
 
-  final _stateController = StreamController<double>.broadcast();
+class KnobState {
+  KnobData knobData = KnobData();
 
-  StreamSink<double> get sink => _stateController.sink;
-  Stream<double> get stream => _stateController.stream;
+  final _stateController = StreamController<KnobData>.broadcast();
+
+  StreamSink<KnobData> get sink => _stateController.sink;
+  Stream<KnobData> get stream => _stateController.stream;
 
   dissolve() => _stateController.close();
 }

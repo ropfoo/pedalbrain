@@ -12,12 +12,12 @@ class KnobBloc {
     event.stream.listen((event) {
       switch (event.action) {
         case KnobAction.turn:
-          state.rotation = event.rotation;
+          state.knobData.rotation = event.rotation;
           break;
         default:
-          state.rotation = pi;
+          state.knobData.rotation = pi;
       }
-      state.sink.add(state.rotation);
+      state.sink.add(state.knobData);
     });
   }
 
@@ -35,7 +35,6 @@ class KnobBloc {
     bool panDown = !panUp;
 
     /// Absoulte change on axis
-
     double yChange = dragUpdateDetails.delta.dy.abs();
     double xChange = dragUpdateDetails.delta.dx.abs();
 
@@ -50,7 +49,7 @@ class KnobBloc {
     // Total computed change
     double rotationalChange = verticalRotation + horizontalRotation;
 
-    double rotation = state.rotation + rotationalChange / 100;
+    double rotation = state.knobData.rotation + rotationalChange / 50;
 
     event.sink.add(KnobEventType(rotation: rotation, action: KnobAction.turn));
   }
