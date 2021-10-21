@@ -1,8 +1,9 @@
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
-import 'package:pedalbrain/knob/bloc/knob_event.dart';
-import 'package:pedalbrain/knob/bloc/knob_state.dart';
+
+import 'knob_event.dart';
+import 'knob_state.dart';
 
 class KnobBloc {
   final state = KnobState();
@@ -12,8 +13,14 @@ class KnobBloc {
     event.stream.listen((event) {
       switch (event.action) {
         case KnobAction.turn:
-          state.knobData.rotation = event.rotation;
+          state.knobData.rotation = event.payload?.rotation ?? 0;
           break;
+
+        case KnobAction.updatePos:
+          state.knobData.position =
+              event.payload?.newPos ?? Pos(xPos: 0, yPos: 0);
+          break;
+
         default:
           state.knobData.rotation = pi;
       }
@@ -51,6 +58,7 @@ class KnobBloc {
 
     double rotation = state.knobData.rotation + rotationalChange / 50;
 
-    event.sink.add(KnobEventType(rotation: rotation, action: KnobAction.turn));
+    event.sink.add(KnobEventType(
+        payload: KnobPayload(rotation: rotation), action: KnobAction.turn));
   }
 }

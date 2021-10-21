@@ -1,12 +1,25 @@
 import 'dart:async';
 
-enum KnobAction { turn }
+class Pos {
+  final double xPos;
+  final double yPos;
+
+  Pos({required this.xPos, required this.yPos});
+}
+
+enum KnobAction { turn, updatePos }
+
+class KnobPayload {
+  double? rotation;
+  Pos? newPos;
+  KnobPayload({this.rotation, this.newPos});
+}
 
 class KnobEventType {
-  final double rotation;
+  KnobPayload? payload;
   final KnobAction action;
 
-  KnobEventType({required this.rotation, required this.action});
+  KnobEventType({this.payload, required this.action});
 }
 
 class KnobEvent {
