@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pedalbrain/modules/board/board.dart';
 
 import 'modules/pedal/pedal.dart';
 
@@ -14,7 +15,7 @@ class App extends StatelessWidget {
           appBar: AppBar(
             title: const Text('Drag And drop Plugin'),
           ),
-          body: Pedal()),
+          body: const Board()),
     );
   }
 }

@@ -2,12 +2,12 @@ import 'dart:async';
 
 import 'dart:math';
 
-import 'package:pedalbrain/modules/knob/bloc/knob_event.dart';
+import 'package:pedalbrain/models/position.dart';
 
 class KnobData {
   double rotation = pi;
   String label = 'unnamed';
-  Pos position = Pos(xPos: 0, yPos: 0);
+  Position position = Position(x: 0, y: 0);
 }
 
 class KnobState {

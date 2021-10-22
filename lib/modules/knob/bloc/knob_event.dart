@@ -1,17 +1,12 @@
 import 'dart:async';
 
-class Pos {
-  final double xPos;
-  final double yPos;
-
-  Pos({required this.xPos, required this.yPos});
-}
+import 'package:pedalbrain/models/position.dart';
 
 enum KnobAction { turn, updatePos }
 
 class KnobPayload {
   double? rotation;
-  Pos? newPos;
+  Position? newPos;
   KnobPayload({this.rotation, this.newPos});
 }
 

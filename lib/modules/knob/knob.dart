@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/knob/bloc/knob_event.dart';
 
 import 'bloc/knob_bloc.dart';
@@ -23,25 +24,34 @@ class Knob extends StatelessWidget {
       key: key,
       stream: _knobBloc.state.stream,
       builder: (context, snapshot) {
-        double currXPos = _knobBloc.state.knobData.position.xPos;
-        double currYPos = _knobBloc.state.knobData.position.yPos;
+        double currXPos = _knobBloc.state.knobData.position.x;
+        double currYPos = _knobBloc.state.knobData.position.y;
+
         return Positioned(
-            left: currXPos,
-            top: currYPos,
-            child: GestureDetector(
-              onPanUpdate: (tapInfo) {
+          left: currXPos,
+          top: currYPos,
+          child: GestureDetector(
+            onPanUpdate: (tapInfo) {
+              bool validYPos = currYPos + tapInfo.delta.dy > 0;
+              bool validXPos = currXPos + tapInfo.delta.dx > 0;
+
+              if (validYPos && validXPos) {
                 _knobBloc.event.sink.add(
                   KnobEventType(
                     action: KnobAction.updatePos,
                     payload: KnobPayload(
-                      newPos: Pos(
-                        xPos: currXPos + tapInfo.delta.dx,
-                        yPos: currYPos + tapInfo.delta.dy,
+                      newPos: Position(
+                        x: currXPos + tapInfo.delta.dx,
+                        y: currYPos + tapInfo.delta.dy,
                       ),
                     ),
                   ),
                 );
-              },
+              }
+            },
+            child: Container(
+              color: Colors.red,
+              padding: const EdgeInsets.all(10),
               child: Column(
                 children: [
                   GestureDetector(
@@ -73,7 +83,9 @@ class Knob extends StatelessWidget {
                   )
                 ],
               ),
-            ));
+            ),
+          ),
+        );
       },
     );
   }
