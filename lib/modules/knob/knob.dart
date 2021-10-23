@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/knob/bloc/knob_event.dart';
 
@@ -11,15 +12,18 @@ class Knob extends StatelessWidget {
   final _knobBloc = KnobBloc();
   final double radius;
   final String label;
+  final Dimensions parentDimensions;
 
   Knob({
     Key? key,
     required this.radius,
     required this.label,
+    required this.parentDimensions,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    print('test');
     return StreamBuilder(
       key: key,
       stream: _knobBloc.state.stream,
@@ -32,8 +36,14 @@ class Knob extends StatelessWidget {
           top: currYPos,
           child: GestureDetector(
             onPanUpdate: (tapInfo) {
-              bool validYPos = currYPos + tapInfo.delta.dy > 0;
-              bool validXPos = currXPos + tapInfo.delta.dx > 0;
+              double currWidth = context.size?.width ?? 0;
+              double currHeight = context.size?.height ?? 0;
+              bool validYPos = currYPos + tapInfo.delta.dy > 0 &&
+                  currYPos + tapInfo.delta.dy <
+                      parentDimensions.height - currHeight - 10;
+              bool validXPos = currXPos + tapInfo.delta.dx > 0 &&
+                  currXPos + tapInfo.delta.dx <
+                      parentDimensions.width - currWidth - 20;
 
               if (validYPos && validXPos) {
                 _knobBloc.event.sink.add(
@@ -41,8 +51,8 @@ class Knob extends StatelessWidget {
                     action: KnobAction.updatePos,
                     payload: KnobPayload(
                       newPos: Position(
-                        x: currXPos + tapInfo.delta.dx,
-                        y: currYPos + tapInfo.delta.dy,
+                        x: currXPos + tapInfo.delta.dx.round(),
+                        y: currYPos + tapInfo.delta.dy.round(),
                       ),
                     ),
                   ),
@@ -50,8 +60,7 @@ class Knob extends StatelessWidget {
               }
             },
             child: Container(
-              color: Colors.red,
-              padding: const EdgeInsets.all(10),
+              // color: Colors.red,
               child: Column(
                 children: [
                   GestureDetector(

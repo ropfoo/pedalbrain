@@ -1,13 +1,15 @@
 import 'dart:async';
 
+import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/position.dart';
 
-enum PedalAction { upatePos }
+enum PedalAction { upatePos, updateDimesnions }
 
 class PedalPayload {
   Position? newPos;
+  Dimensions? newDimensions;
 
-  PedalPayload({this.newPos});
+  PedalPayload({this.newPos, this.newDimensions});
 }
 
 class PedalEventType {
