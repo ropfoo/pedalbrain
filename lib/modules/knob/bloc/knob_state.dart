@@ -7,7 +7,7 @@ import 'package:pedalbrain/models/position.dart';
 class KnobData {
   double rotation = pi;
   String label = 'unnamed';
-  Position position = Position(x: 0, y: 0);
+  Position? position;
 }
 
 class KnobState {

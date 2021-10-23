@@ -12,30 +12,33 @@ class Knob extends StatelessWidget {
   final _knobBloc = KnobBloc();
   final double radius;
   final String label;
-  final Dimensions parentDimensions;
 
   Knob({
     Key? key,
     required this.radius,
     required this.label,
-    required this.parentDimensions,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    print('test');
     return StreamBuilder(
       key: key,
       stream: _knobBloc.state.stream,
       builder: (context, snapshot) {
-        double currXPos = _knobBloc.state.knobData.position.x;
-        double currYPos = _knobBloc.state.knobData.position.y;
+        double currXPos = _knobBloc.state.knobData.position?.x ?? 0;
+        double currYPos = _knobBloc.state.knobData.position?.y ?? 0;
 
         return Positioned(
           left: currXPos,
           top: currYPos,
           child: GestureDetector(
             onPanUpdate: (tapInfo) {
+              double parentWidth =
+                  context.findAncestorStateOfType()?.context.size?.width ?? 0;
+              double parentHeight =
+                  context.findAncestorStateOfType()?.context.size?.height ?? 0;
+              Dimensions parentDimensions =
+                  Dimensions(width: parentWidth, height: parentHeight);
               double currWidth = context.size?.width ?? 0;
               double currHeight = context.size?.height ?? 0;
               bool validYPos = currYPos + tapInfo.delta.dy > 0 &&
@@ -45,7 +48,8 @@ class Knob extends StatelessWidget {
                   currXPos + tapInfo.delta.dx <
                       parentDimensions.width - currWidth - 20;
 
-              if (validYPos && validXPos) {
+              if ((validYPos && validXPos) ||
+                  _knobBloc.state.knobData.position == null) {
                 _knobBloc.event.sink.add(
                   KnobEventType(
                     action: KnobAction.updatePos,

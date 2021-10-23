@@ -20,21 +20,6 @@ class Pedal extends StatelessWidget {
         double currWidth = _pedalBloc.state.pedalData.dimensions.width;
         double currHeight = _pedalBloc.state.pedalData.dimensions.height;
 
-        final List<Knob> _knobs = [
-          Knob(
-            radius: 20,
-            label: 'Bass',
-            parentDimensions: Dimensions(width: 300, height: 400),
-          ),
-          Knob(
-              radius: 20,
-              label: 'Gain',
-              parentDimensions: Dimensions(width: 300, height: 400)),
-          Knob(
-              radius: 20,
-              label: 'Treble',
-              parentDimensions: Dimensions(width: 300, height: 400))
-        ];
         return Positioned(
           left: currXPos,
           top: currYPos,
@@ -62,7 +47,7 @@ class Pedal extends StatelessWidget {
                   height: _pedalBloc.state.pedalData.dimensions.height,
                   padding: const EdgeInsets.all(10),
                   child: Stack(
-                    children: _knobs,
+                    children: _pedalBloc.state.pedalData.knobs,
                   ),
                 ),
               ),
