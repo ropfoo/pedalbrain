@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/position.dart';
-import 'package:pedalbrain/modules/knob/knob.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_bloc.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_event.dart';
 
@@ -64,6 +63,31 @@ class Pedal extends StatelessWidget {
                       ),
                     ),
                   );
+
+                  for (var knob in _pedalBloc.state.pedalData.knobs) {
+                    if (_pedalBloc.state.pedalData.dimensions.height <
+                        (knob.getPosition().y + knob.getDimensions().height)) {
+                      knob.updatePosition(
+                        Position(
+                          x: knob.getPosition().x,
+                          y: currHeight +
+                              tapInfo.delta.dy -
+                              knob.getDimensions().height,
+                        ),
+                      );
+                    }
+                    if (_pedalBloc.state.pedalData.dimensions.width <
+                        (knob.getPosition().x + knob.getDimensions().width)) {
+                      knob.updatePosition(
+                        Position(
+                          x: currWidth +
+                              tapInfo.delta.dx -
+                              knob.getDimensions().width,
+                          y: knob.getPosition().y,
+                        ),
+                      );
+                    }
+                  }
                 },
                 child: Container(
                   width: 50,

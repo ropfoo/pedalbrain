@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/gestures.dart';
+import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/position.dart';
 
 import 'knob_event.dart';
@@ -20,6 +21,11 @@ class KnobBloc {
         case KnobAction.updatePos:
           state.knobData.position =
               event.payload?.newPos ?? Position(x: 0, y: 0);
+          break;
+
+        case KnobAction.setDimensions:
+          state.knobData.dimensions = event.payload?.newDimensions ??
+              Dimensions(width: 100, height: 100);
           break;
 
         default:

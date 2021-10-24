@@ -13,11 +13,33 @@ class Knob extends StatelessWidget {
   final double radius;
   final String label;
 
-  Knob({
-    Key? key,
-    required this.radius,
-    required this.label,
-  }) : super(key: key);
+  Position getPosition() {
+    return _knobBloc.state.knobData.position ?? Position(x: 0, y: 0);
+  }
+
+  void updatePosition(Position newPosition) {
+    _knobBloc.event.sink.add(
+      KnobEventType(
+        action: KnobAction.updatePos,
+        payload: KnobPayload(
+          newPos: newPosition,
+        ),
+      ),
+    );
+  }
+
+  Dimensions getDimensions() {
+    return _knobBloc.state.knobData.dimensions ??
+        Dimensions(width: 100, height: 100);
+  }
+
+  void _setDimensions(Dimensions newDimensions) {
+    _knobBloc.event.sink.add(KnobEventType(
+        action: KnobAction.setDimensions,
+        payload: KnobPayload(newDimensions: newDimensions)));
+  }
+
+  Knob({Key? key, required this.radius, required this.label}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +50,8 @@ class Knob extends StatelessWidget {
         double currXPos = _knobBloc.state.knobData.position?.x ?? 0;
         double currYPos = _knobBloc.state.knobData.position?.y ?? 0;
 
+        updatePosition(Position(x: currXPos, y: currYPos));
+
         return Positioned(
           left: currXPos,
           top: currYPos,
@@ -35,30 +59,31 @@ class Knob extends StatelessWidget {
             onPanUpdate: (tapInfo) {
               double parentWidth =
                   context.findAncestorStateOfType()?.context.size?.width ?? 0;
+
               double parentHeight =
                   context.findAncestorStateOfType()?.context.size?.height ?? 0;
+
               Dimensions parentDimensions =
                   Dimensions(width: parentWidth, height: parentHeight);
+
               double currWidth = context.size?.width ?? 0;
               double currHeight = context.size?.height ?? 0;
+              _setDimensions(Dimensions(width: currWidth, height: currHeight));
+
               bool validYPos = currYPos + tapInfo.delta.dy > 0 &&
                   currYPos + tapInfo.delta.dy <
                       parentDimensions.height - currHeight - 10;
+
               bool validXPos = currXPos + tapInfo.delta.dx > 0 &&
                   currXPos + tapInfo.delta.dx <
                       parentDimensions.width - currWidth - 20;
 
               if ((validYPos && validXPos) ||
                   _knobBloc.state.knobData.position == null) {
-                _knobBloc.event.sink.add(
-                  KnobEventType(
-                    action: KnobAction.updatePos,
-                    payload: KnobPayload(
-                      newPos: Position(
-                        x: currXPos + tapInfo.delta.dx.round(),
-                        y: currYPos + tapInfo.delta.dy.round(),
-                      ),
-                    ),
+                updatePosition(
+                  Position(
+                    x: currXPos + tapInfo.delta.dx.round(),
+                    y: currYPos + tapInfo.delta.dy.round(),
                   ),
                 );
               }
