@@ -3,6 +3,7 @@ import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_bloc.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_event.dart';
+import 'package:pedalbrain/widgets/circle_button.dart';
 
 class Pedal extends StatelessWidget {
   final _pedalBloc = PedalBloc();
@@ -50,50 +51,52 @@ class Pedal extends StatelessWidget {
                   ),
                 ),
               ),
-              GestureDetector(
-                onPanUpdate: (tapInfo) {
-                  _pedalBloc.event.sink.add(
-                    PedalEventType(
-                      action: PedalAction.updateDimesnions,
-                      payload: PedalPayload(
-                        newDimensions: Dimensions(
-                          width: currWidth + tapInfo.delta.dx,
-                          height: currHeight + tapInfo.delta.dy,
+              Container(
+                alignment: Alignment.bottomRight,
+                width: _pedalBloc.state.pedalData.dimensions.width + 100,
+                child: GestureDetector(
+                    onPanUpdate: (tapInfo) {
+                      _pedalBloc.event.sink.add(
+                        PedalEventType(
+                          action: PedalAction.updateDimesnions,
+                          payload: PedalPayload(
+                            newDimensions: Dimensions(
+                              width: currWidth + tapInfo.delta.dx,
+                              height: currHeight + tapInfo.delta.dy,
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  );
+                      );
 
-                  for (var knob in _pedalBloc.state.pedalData.knobs) {
-                    if (_pedalBloc.state.pedalData.dimensions.height <
-                        (knob.getPosition().y + knob.getDimensions().height)) {
-                      knob.updatePosition(
-                        Position(
-                          x: knob.getPosition().x,
-                          y: currHeight +
-                              tapInfo.delta.dy -
-                              knob.getDimensions().height,
-                        ),
-                      );
-                    }
-                    if (_pedalBloc.state.pedalData.dimensions.width <
-                        (knob.getPosition().x + knob.getDimensions().width)) {
-                      knob.updatePosition(
-                        Position(
-                          x: currWidth +
-                              tapInfo.delta.dx -
-                              knob.getDimensions().width,
-                          y: knob.getPosition().y,
-                        ),
-                      );
-                    }
-                  }
-                },
-                child: Container(
-                  width: 50,
-                  height: 50,
-                  color: Colors.white,
-                ),
+                      for (var knob in _pedalBloc.state.pedalData.knobs) {
+                        if (_pedalBloc.state.pedalData.dimensions.height <
+                            (knob.getPosition().y +
+                                knob.getDimensions().height)) {
+                          knob.updatePosition(
+                            Position(
+                              x: knob.getPosition().x,
+                              y: currHeight +
+                                  tapInfo.delta.dy -
+                                  knob.getDimensions().height,
+                            ),
+                          );
+                        }
+
+                        if (_pedalBloc.state.pedalData.dimensions.width <
+                            (knob.getPosition().x +
+                                knob.getDimensions().width)) {
+                          knob.updatePosition(
+                            Position(
+                              x: currWidth +
+                                  tapInfo.delta.dx -
+                                  knob.getDimensions().width,
+                              y: knob.getPosition().y,
+                            ),
+                          );
+                        }
+                      }
+                    },
+                    child: CircleButton()),
               )
             ],
           ),
