@@ -39,16 +39,34 @@ class Pedal extends StatelessWidget {
                     ),
                   );
                 },
-                child: Container(
-                  decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.amber),
-                  width: _pedalBloc.state.pedalData.dimensions.width,
-                  height: _pedalBloc.state.pedalData.dimensions.height,
-                  padding: const EdgeInsets.all(10),
-                  child: Stack(
-                    children: _pedalBloc.state.pedalData.knobs,
-                  ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.amber),
+                        width: _pedalBloc.state.pedalData.dimensions.width,
+                        height:
+                            _pedalBloc.state.pedalData.dimensions.height + 40,
+                      ),
+                    ),
+                    Positioned(
+                      top: 0,
+                      left: 0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(10),
+                            color: Colors.amberAccent),
+                        width: _pedalBloc.state.pedalData.dimensions.width,
+                        height: _pedalBloc.state.pedalData.dimensions.height,
+                        padding: const EdgeInsets.all(10),
+                        child: Stack(
+                          children: _pedalBloc.state.pedalData.knobs,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
               Container(
