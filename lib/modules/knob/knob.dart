@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/knob/bloc/knob_event.dart';
+import 'package:pedalbrain/widgets/circle_painter.dart';
 
 import 'bloc/knob_bloc.dart';
 import 'knob_label.dart';
@@ -105,11 +106,26 @@ class Knob extends StatelessWidget {
                         ),
                         constraints: BoxConstraints(maxWidth: radius * 2),
                         child: Center(
-                          child: CustomPaint(
-                            painter: KnobPainter(
-                              rotation: _knobBloc.state.knobData.rotation,
-                              radius: radius,
-                            ),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Positioned(
+                                child: CustomPaint(
+                                  painter: CirclePainter(
+                                      radius: radius + .5,
+                                      offset: const Offset(0, 5),
+                                      color: Colors.black54),
+                                ),
+                              ),
+                              Positioned(
+                                child: CustomPaint(
+                                  painter: KnobPainter(
+                                    rotation: _knobBloc.state.knobData.rotation,
+                                    radius: radius,
+                                  ),
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

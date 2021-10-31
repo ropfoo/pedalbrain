@@ -12,6 +12,7 @@ class KnobPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     canvas.rotate(rotation);
+
     canvas.drawCircle(
       const Offset(0, 0),
       radius,
@@ -19,7 +20,7 @@ class KnobPainter extends CustomPainter {
     );
 
     final linePaint = Paint()
-      ..color = Colors.blue.shade400
+      ..color = Colors.white70
       ..strokeWidth = radius / 5
       ..strokeCap = StrokeCap.round;
     canvas.drawLine(const Offset(0, 0), Offset(0, radius - 7), linePaint);
