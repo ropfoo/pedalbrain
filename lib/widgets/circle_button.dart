@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CircleButton extends StatelessWidget {
-  const CircleButton({Key? key}) : super(key: key);
+  final Widget icon;
+  const CircleButton({Key? key, required this.icon}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +12,7 @@ class CircleButton extends StatelessWidget {
         shape: const CircleBorder(),
         padding: const EdgeInsets.all(15),
       ),
-      child: Text('-'),
+      child: icon,
       onPressed: () => {},
     );
   }

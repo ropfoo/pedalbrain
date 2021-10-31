@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_bloc.dart';
@@ -9,6 +10,14 @@ class Pedal extends StatelessWidget {
   final _pedalBloc = PedalBloc();
 
   Pedal({Key? key}) : super(key: key);
+
+  final Widget resizeSVG = SvgPicture.asset(
+    'assets/icons/resize.svg',
+    semanticsLabel: 'Acme Logo',
+    color: Colors.white,
+    width: 25,
+    height: 25,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -114,7 +123,9 @@ class Pedal extends StatelessWidget {
                         }
                       }
                     },
-                    child: CircleButton()),
+                    child: CircleButton(
+                      icon: resizeSVG,
+                    )),
               )
             ],
           ),
