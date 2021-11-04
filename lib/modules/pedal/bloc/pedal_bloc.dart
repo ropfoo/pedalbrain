@@ -1,13 +1,17 @@
 import 'package:pedalbrain/models/dimensions.dart';
+import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_event.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_state.dart';
 
 class PedalBloc {
+  final PedalData initPedalData;
   final state = PedalState();
   final event = PedalEvent();
 
-  PedalBloc() {
+  PedalBloc({required this.initPedalData}) {
+    state.pedalData = initPedalData;
+
     event.stream.listen((event) {
       switch (event.action) {
         case PedalAction.upatePos:

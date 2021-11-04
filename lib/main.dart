@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pedalbrain/modules/board/board.dart';
-import 'package:pedalbrain/services/get_user.dart';
+import 'package:pedalbrain/modules/user/user.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -30,12 +29,7 @@ class App extends StatelessWidget {
 
               // Once complete, show your application
               if (snapshot.connectionState == ConnectionState.done) {
-                return Column(
-                  children: [
-                    GetUser(),
-                    // Board(),
-                  ],
-                );
+                return User();
               }
 
               return const Text('lel');

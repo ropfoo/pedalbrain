@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:pedalbrain/models/dimensions.dart';
+import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_bloc.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_event.dart';
 import 'package:pedalbrain/widgets/circle_button.dart';
 
 class Pedal extends StatelessWidget {
-  final _pedalBloc = PedalBloc();
+  final PedalData initPedalData;
 
-  Pedal({Key? key}) : super(key: key);
+  Pedal({Key? key, required this.initPedalData}) : super(key: key);
 
   final Widget resizeSVG = SvgPicture.asset(
     'assets/icons/resize.svg',
@@ -21,6 +22,8 @@ class Pedal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final _pedalBloc = PedalBloc(initPedalData: initPedalData);
+
     return StreamBuilder(
       stream: _pedalBloc.state.stream,
       builder: (constex, snapshot) {

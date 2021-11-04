@@ -21,8 +21,8 @@ class Board extends StatelessWidget {
         width: 1000,
         height: 2000,
         child: Stack(
-          children: [Pedal()],
-        ),
+            // children: [Pedal()],
+            ),
       ),
     );
   }
