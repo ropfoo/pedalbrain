@@ -29,7 +29,7 @@ class App extends StatelessWidget {
 
               // Once complete, show your application
               if (snapshot.connectionState == ConnectionState.done) {
-                return User();
+                return PedalUI();
               }
 
               return const Text('lel');

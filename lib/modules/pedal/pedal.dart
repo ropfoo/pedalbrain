@@ -9,8 +9,10 @@ import 'package:pedalbrain/widgets/circle_button.dart';
 
 class Pedal extends StatelessWidget {
   final PedalData initPedalData;
+  final bool isEditable;
 
-  Pedal({Key? key, required this.initPedalData}) : super(key: key);
+  Pedal({Key? key, required this.initPedalData, this.isEditable = false})
+      : super(key: key);
 
   final Widget resizeSVG = SvgPicture.asset(
     'assets/icons/resize.svg',
@@ -39,17 +41,19 @@ class Pedal extends StatelessWidget {
             children: [
               GestureDetector(
                 onPanUpdate: (tapInfo) {
-                  _pedalBloc.event.sink.add(
-                    PedalEventType(
-                      action: PedalAction.upatePos,
-                      payload: PedalPayload(
-                        newPos: Position(
-                          x: currXPos + tapInfo.delta.dx,
-                          y: currYPos + tapInfo.delta.dy,
+                  if (isEditable) {
+                    _pedalBloc.event.sink.add(
+                      PedalEventType(
+                        action: PedalAction.upatePos,
+                        payload: PedalPayload(
+                          newPos: Position(
+                            x: currXPos + tapInfo.delta.dx,
+                            y: currYPos + tapInfo.delta.dy,
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  }
                 },
                 child: Stack(
                   children: [
@@ -84,51 +88,54 @@ class Pedal extends StatelessWidget {
               Container(
                 alignment: Alignment.bottomRight,
                 width: _pedalBloc.state.pedalData.dimensions.width + 100,
-                child: GestureDetector(
-                    onPanUpdate: (tapInfo) {
-                      _pedalBloc.event.sink.add(
-                        PedalEventType(
-                          action: PedalAction.updateDimesnions,
-                          payload: PedalPayload(
-                            newDimensions: Dimensions(
-                              width: currWidth + tapInfo.delta.dx,
-                              height: currHeight + tapInfo.delta.dy,
+                child: isEditable
+                    ? GestureDetector(
+                        onPanUpdate: (tapInfo) {
+                          _pedalBloc.event.sink.add(
+                            PedalEventType(
+                              action: PedalAction.updateDimesnions,
+                              payload: PedalPayload(
+                                newDimensions: Dimensions(
+                                  width: currWidth + tapInfo.delta.dx,
+                                  height: currHeight + tapInfo.delta.dy,
+                                ),
+                              ),
                             ),
-                          ),
+                          );
+
+                          for (var knob in _pedalBloc.state.pedalData.knobs) {
+                            if (_pedalBloc.state.pedalData.dimensions.height <
+                                (knob.getPosition().y +
+                                    knob.getDimensions().height)) {
+                              knob.updatePosition(
+                                Position(
+                                  x: knob.getPosition().x,
+                                  y: currHeight +
+                                      tapInfo.delta.dy -
+                                      knob.getDimensions().height,
+                                ),
+                              );
+                            }
+
+                            if (_pedalBloc.state.pedalData.dimensions.width <
+                                (knob.getPosition().x +
+                                    knob.getDimensions().width)) {
+                              knob.updatePosition(
+                                Position(
+                                  x: currWidth +
+                                      tapInfo.delta.dx -
+                                      knob.getDimensions().width,
+                                  y: knob.getPosition().y,
+                                ),
+                              );
+                            }
+                          }
+                        },
+                        child: CircleButton(
+                          icon: resizeSVG,
                         ),
-                      );
-
-                      for (var knob in _pedalBloc.state.pedalData.knobs) {
-                        if (_pedalBloc.state.pedalData.dimensions.height <
-                            (knob.getPosition().y +
-                                knob.getDimensions().height)) {
-                          knob.updatePosition(
-                            Position(
-                              x: knob.getPosition().x,
-                              y: currHeight +
-                                  tapInfo.delta.dy -
-                                  knob.getDimensions().height,
-                            ),
-                          );
-                        }
-
-                        if (_pedalBloc.state.pedalData.dimensions.width <
-                            (knob.getPosition().x +
-                                knob.getDimensions().width)) {
-                          knob.updatePosition(
-                            Position(
-                              x: currWidth +
-                                  tapInfo.delta.dx -
-                                  knob.getDimensions().width,
-                              y: knob.getPosition().y,
-                            ),
-                          );
-                        }
-                      }
-                    },
-                    child: CircleButton(
-                      icon: resizeSVG,
-                    )),
+                      )
+                    : Container(),
               )
             ],
           ),

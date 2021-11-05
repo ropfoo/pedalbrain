@@ -3,7 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/modules/pedal/pedal.dart';
 
-class User extends StatelessWidget {
+class PedalUI extends StatefulWidget {
+  const PedalUI({Key? key}) : super(key: key);
+
+  @override
+  _PedalUIState createState() => _PedalUIState();
+}
+
+class _PedalUIState extends State<PedalUI> {
+  bool isEditMode = false;
+
   CollectionReference pedals = FirebaseFirestore.instance
       .collection('users')
       .doc('So6Y0xYBudc4jDDEjGNM')
@@ -30,7 +39,17 @@ class User extends StatelessWidget {
             return Stack(
               children: [
                 Pedal(
+                  isEditable: isEditMode,
                   initPedalData: PedalData.createFromSnapshot(data),
+                ),
+                Positioned(
+                  width: 200,
+                  height: 500,
+                  child: TextButton(
+                      onPressed: () => setState(() {
+                            isEditMode = !isEditMode;
+                          }),
+                      child: Text('test')),
                 )
               ],
             );
@@ -40,5 +59,3 @@ class User extends StatelessWidget {
     );
   }
 }
-
-class QuerySnapshot {}
