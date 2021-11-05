@@ -16,8 +16,8 @@ class PedalData {
   PedalData.createFromSnapshot(dynamic snapshotData) {
     var data = snapshotData as Map<String, dynamic>;
     var dataDimensions = data['dimensions'];
-    var width = dataDimensions['width'] as int;
-    var height = dataDimensions['height'] as int;
+    int width = dataDimensions['width'];
+    int height = dataDimensions['height'];
     var initDimensions =
         Dimensions(width: width.toDouble(), height: height.toDouble());
 

@@ -12,31 +12,32 @@ class User extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<Object>(
-        stream: null,
-        builder: (context, snapshot) {
-          return FutureBuilder<dynamic>(
-            future: pedals.doc('f4fkYjHnvVStEnMEllQ4').get(),
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (snapshot.hasError) {
-                return Text('Something went wrong');
-              }
+      stream: null,
+      builder: (context, snapshot) {
+        return FutureBuilder<dynamic>(
+          future: pedals.doc('f4fkYjHnvVStEnMEllQ4').get(),
+          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+            if (snapshot.hasError) {
+              return Text('Something went wrong');
+            }
 
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return Text("Loading");
-              }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Text("Loading");
+            }
 
-              var data = snapshot.data?.data() as Map<String, dynamic>;
+            var data = snapshot.data?.data() as Map<String, dynamic>;
 
-              return Stack(
-                children: [
-                  Pedal(
-                    initPedalData: PedalData.createFromSnapshot(data),
-                  )
-                ],
-              );
-            },
-          );
-        });
+            return Stack(
+              children: [
+                Pedal(
+                  initPedalData: PedalData.createFromSnapshot(data),
+                )
+              ],
+            );
+          },
+        );
+      },
+    );
   }
 }
 
