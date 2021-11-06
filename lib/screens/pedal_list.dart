@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
@@ -12,6 +13,35 @@ class PedalList extends StatefulWidget {
 }
 
 class _PedalListState extends State<PedalList> {
+  CollectionReference pedals = FirebaseFirestore.instance
+      .collection('users')
+      .doc('So6Y0xYBudc4jDDEjGNM')
+      .collection('pedals');
+
+  Future<List<dynamic>> getData() async {
+    // Get docs from collection reference
+    QuerySnapshot querySnapshot = await pedals.get();
+
+    // Get data from docs and convert map to List
+    return querySnapshot.docs.map((doc) => doc.data()).toList();
+  }
+
+  List<PedalListItem> getPedalListItems(List<dynamic> list) {
+    List<PedalListItem> pedalListItems = [];
+    for (var item in list) {
+      var pedalData = PedalData.createFromSnapshot(item);
+      var resizeFactor = 2.8;
+      pedalData.dimensions = Dimensions(
+          width: pedalData.dimensions.width / resizeFactor,
+          height: pedalData.dimensions.height / resizeFactor);
+      pedalData.position = Position(x: 0, y: 20);
+      pedalListItems.add(PedalListItem(
+        pedalData: pedalData,
+      ));
+    }
+    return pedalListItems;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,11 +63,17 @@ class _PedalListState extends State<PedalList> {
           ),
           SizedBox(
             height: 600,
-            child: ListView(
-              children: const [
-                PedalListItem(),
-                PedalListItem(),
-              ],
+            child: FutureBuilder(
+              future: getData(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  return ListView(
+                    children: getPedalListItems(snapshot.data),
+                  );
+                }
+
+                return const Text('loading');
+              },
             ),
           )
         ],
@@ -47,7 +83,9 @@ class _PedalListState extends State<PedalList> {
 }
 
 class PedalListItem extends StatelessWidget {
-  const PedalListItem({Key? key}) : super(key: key);
+  final PedalData pedalData;
+
+  const PedalListItem({Key? key, required this.pedalData}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -69,9 +107,9 @@ class PedalListItem extends StatelessWidget {
               ),
             ),
             alignment: Alignment.centerLeft,
-            child: const Text(
-              'This is a Pedal',
-              style: TextStyle(
+            child: Text(
+              pedalData.name,
+              style: const TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 21,
                 color: Colors.white,
@@ -86,11 +124,7 @@ class PedalListItem extends StatelessWidget {
           child: Stack(
             children: [
               Pedal(
-                initPedalData: PedalData(
-                  dimensions: Dimensions(height: 70, width: 80),
-                  position: Position(x: 0, y: 30),
-                  knobs: [],
-                ),
+                initPedalData: pedalData,
               ),
             ],
           ),

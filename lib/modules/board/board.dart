@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pedalbrain/modules/pedal/pedal.dart';
 
 class Board extends StatelessWidget {
   Board({Key? key}) : super(key: key);

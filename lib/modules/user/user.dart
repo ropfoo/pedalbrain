@@ -27,11 +27,11 @@ class _PedalUIState extends State<PedalUI> {
           future: pedals.doc('f4fkYjHnvVStEnMEllQ4').get(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             if (snapshot.hasError) {
-              return Text('Something went wrong');
+              return const Text('Something went wrong');
             }
 
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Text("Loading");
+              return const Text("Loading");
             }
 
             var data = snapshot.data?.data() as Map<String, dynamic>;
@@ -49,7 +49,7 @@ class _PedalUIState extends State<PedalUI> {
                       onPressed: () => setState(() {
                             isEditMode = !isEditMode;
                           }),
-                      child: Text('test')),
+                      child: const Text('test')),
                 )
               ],
             );

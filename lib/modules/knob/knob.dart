@@ -13,6 +13,14 @@ class Knob extends StatelessWidget {
   final _knobBloc = KnobBloc();
   final double radius;
   final String label;
+  final bool showLabel;
+
+  Knob(
+      {Key? key,
+      required this.radius,
+      required this.label,
+      required this.showLabel})
+      : super(key: key);
 
   Position getPosition() {
     return _knobBloc.state.knobData.position ?? Position(x: 0, y: 0);
@@ -39,8 +47,6 @@ class Knob extends StatelessWidget {
         action: KnobAction.setDimensions,
         payload: KnobPayload(newDimensions: newDimensions)));
   }
-
-  Knob({Key? key, required this.radius, required this.label}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -131,10 +137,11 @@ class Knob extends StatelessWidget {
                       ),
                     ),
                   ),
-                  KnobLabel(
-                    key: key,
-                    text: label,
-                  )
+                  if (showLabel)
+                    KnobLabel(
+                      key: key,
+                      text: label,
+                    )
                 ],
               ),
             ),

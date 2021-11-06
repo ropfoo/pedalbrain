@@ -6,11 +6,13 @@ class PedalData {
   Position position = Position(x: 0, y: 0);
   Dimensions dimensions = Dimensions(width: 300, height: 300);
   List<Knob> knobs = [];
+  String name = 'Pedal';
 
   PedalData({
     required this.dimensions,
     required this.knobs,
     required this.position,
+    required this.name,
   });
 
   PedalData.createFromSnapshot(dynamic snapshotData) {
@@ -27,13 +29,18 @@ class PedalData {
       for (var knobData in data['knobs']) {
         String knobLabel = knobData['label'];
         int knobRadius = knobData['radius'];
-        Knob newKnob = Knob(radius: knobRadius.toDouble(), label: knobLabel);
+        Knob newKnob = Knob(
+          radius: knobRadius.toDouble() / 2,
+          label: knobLabel,
+          showLabel: false,
+        );
         knobs.add(newKnob);
       }
 
       return knobs;
     }
 
+    name = data['name'];
     dimensions = initDimensions;
     knobs = getKnobs();
   }
