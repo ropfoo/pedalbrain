@@ -2,16 +2,20 @@ import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:pedalbrain/models/dimensions.dart';
+import 'package:pedalbrain/models/knob_data.dart';
 import 'package:pedalbrain/models/position.dart';
 
 import 'knob_event.dart';
 import 'knob_state.dart';
 
 class KnobBloc {
+  final KnobData initKnobData;
   final state = KnobState();
   final event = KnobEvent();
 
-  KnobBloc() {
+  KnobBloc({required this.initKnobData}) {
+    state.knobData = initKnobData;
+
     event.stream.listen((event) {
       switch (event.action) {
         case KnobAction.turn:

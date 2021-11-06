@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pedalbrain/modules/user/user.dart';
 import 'package:pedalbrain/screens/pedal_list.dart';
 
 void main() {

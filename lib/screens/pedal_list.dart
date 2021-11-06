@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:pedalbrain/models/dimensions.dart';
+import 'package:pedalbrain/models/knob_data.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/pedal/pedal.dart';
@@ -28,12 +29,20 @@ class _PedalListState extends State<PedalList> {
 
   List<PedalListItem> getPedalListItems(List<dynamic> list) {
     List<PedalListItem> pedalListItems = [];
+    var resizeFactor = .35;
     for (var item in list) {
-      var pedalData = PedalData.createFromSnapshot(item);
-      var resizeFactor = 2.8;
+      var pedalData = PedalData.createFromSnapshot(
+        item,
+        KnobOptions(
+          isEditable: false,
+          showLabel: false,
+          resizeFactor: resizeFactor,
+        ),
+      );
+
       pedalData.dimensions = Dimensions(
-          width: pedalData.dimensions.width / resizeFactor,
-          height: pedalData.dimensions.height / resizeFactor);
+          width: pedalData.dimensions.width * resizeFactor,
+          height: pedalData.dimensions.height * resizeFactor);
       pedalData.position = Position(x: 0, y: 20);
       pedalListItems.add(PedalListItem(
         pedalData: pedalData,

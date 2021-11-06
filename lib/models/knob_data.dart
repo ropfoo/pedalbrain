@@ -9,4 +9,18 @@ class KnobData {
   String label = 'unnamed';
   Position? position;
   Dimensions? dimensions;
+
+  KnobData({this.position});
+}
+
+class KnobOptions {
+  final bool isEditable;
+  final bool showLabel;
+  final double resizeFactor;
+
+  KnobOptions({
+    this.showLabel = true,
+    this.isEditable = false,
+    this.resizeFactor = 1,
+  });
 }

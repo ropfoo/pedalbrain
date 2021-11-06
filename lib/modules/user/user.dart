@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:pedalbrain/models/knob_data.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/modules/pedal/pedal.dart';
 
@@ -40,7 +41,13 @@ class _PedalUIState extends State<PedalUI> {
               children: [
                 Pedal(
                   isEditable: isEditMode,
-                  initPedalData: PedalData.createFromSnapshot(data),
+                  initPedalData: PedalData.createFromSnapshot(
+                    data,
+                    KnobOptions(
+                      isEditable: false,
+                      showLabel: false,
+                    ),
+                  ),
                 ),
                 Positioned(
                   width: 200,

@@ -63,8 +63,8 @@ class Pedal extends StatelessWidget {
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.amber),
                         width: _pedalBloc.state.pedalData.dimensions.width,
-                        height:
-                            _pedalBloc.state.pedalData.dimensions.height + 40,
+                        height: _pedalBloc.state.pedalData.dimensions.height +
+                            0.13 * _pedalBloc.state.pedalData.dimensions.height,
                       ),
                     ),
                     Positioned(

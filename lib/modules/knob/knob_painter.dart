@@ -19,15 +19,19 @@ class KnobPainter extends CustomPainter {
       Paint(),
     );
 
+    print(radius / 5);
+
     final linePaint = Paint()
       ..color = Colors.white70
-      ..strokeWidth = radius / 5
+      ..strokeWidth = (radius / 5)
       ..strokeCap = StrokeCap.round;
     canvas.drawLine(const Offset(0, 0), Offset(0, radius - 7), linePaint);
   }
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    print('test');
+    return false;
     return oldDelegate != rotation;
   }
 }
