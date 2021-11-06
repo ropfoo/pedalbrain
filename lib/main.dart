@@ -1,6 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pedalbrain/modules/user/user.dart';
+import 'package:pedalbrain/screens/pedal_list.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,9 +16,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+          backgroundColor: Colors.black87,
           appBar: AppBar(
             backgroundColor: Colors.black,
-            title: const Text('Pedalbrain'),
           ),
           body: FutureBuilder(
             future: _initialization,
@@ -29,7 +29,8 @@ class App extends StatelessWidget {
 
               // Once complete, show your application
               if (snapshot.connectionState == ConnectionState.done) {
-                return PedalUI();
+                // return PedalUI();
+                return const PedalList();
               }
 
               return const Text('lel');
