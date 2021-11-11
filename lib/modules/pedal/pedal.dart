@@ -9,10 +9,8 @@ import 'package:pedalbrain/widgets/circle_button.dart';
 
 class Pedal extends StatelessWidget {
   final PedalData initPedalData;
-  final bool isEditable;
 
-  Pedal({Key? key, required this.initPedalData, this.isEditable = false})
-      : super(key: key);
+  Pedal({Key? key, required this.initPedalData}) : super(key: key);
 
   final Widget resizeSVG = SvgPicture.asset(
     'assets/icons/resize.svg',
@@ -41,7 +39,7 @@ class Pedal extends StatelessWidget {
             children: [
               GestureDetector(
                 onPanUpdate: (tapInfo) {
-                  if (isEditable) {
+                  if (_pedalBloc.state.pedalData.isEditable) {
                     _pedalBloc.event.sink.add(
                       PedalEventType(
                         action: PedalAction.upatePos,
@@ -55,10 +53,31 @@ class Pedal extends StatelessWidget {
                     );
                   }
                 },
+                onTap: () => _pedalBloc.event.sink.add(
+                  PedalEventType(
+                    action: PedalAction.toggleEditable,
+                  ),
+                ),
                 child: Stack(
                   children: [
+                    if (_pedalBloc.state.pedalData.isEditable)
+                      Positioned(
+                        child: Container(
+                          alignment: Alignment.center,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white),
+                          width:
+                              _pedalBloc.state.pedalData.dimensions.width + 10,
+                          height: _pedalBloc.state.pedalData.dimensions.height +
+                              0.13 *
+                                  _pedalBloc.state.pedalData.dimensions.height +
+                              10,
+                        ),
+                      ),
                     Positioned(
                       child: Container(
+                        margin: const EdgeInsets.only(left: 5, top: 5),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.amber),
@@ -71,6 +90,7 @@ class Pedal extends StatelessWidget {
                       top: 0,
                       left: 0,
                       child: Container(
+                        margin: const EdgeInsets.only(left: 5, top: 5),
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(10),
                             color: Colors.amberAccent),
@@ -88,7 +108,7 @@ class Pedal extends StatelessWidget {
               Container(
                 alignment: Alignment.bottomRight,
                 width: _pedalBloc.state.pedalData.dimensions.width + 100,
-                child: isEditable
+                child: _pedalBloc.state.pedalData.isEditable
                     ? GestureDetector(
                         onPanUpdate: (tapInfo) {
                           _pedalBloc.event.sink.add(

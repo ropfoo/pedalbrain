@@ -28,6 +28,10 @@ class PedalBloc {
           state.pedalData.knobs = event.payload?.newKnobs ?? [];
           break;
 
+        case PedalAction.toggleEditable:
+          state.pedalData.isEditable = !state.pedalData.isEditable;
+          break;
+
         default:
       }
       state.sink.add(state.pedalData);

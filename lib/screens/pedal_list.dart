@@ -99,7 +99,7 @@ class PedalListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 140,
+      height: 145,
       alignment: Alignment.topLeft,
       margin: const EdgeInsets.only(bottom: 20),
       child: Stack(children: [
@@ -128,7 +128,7 @@ class PedalListItem extends StatelessWidget {
         ),
         Positioned(
           width: 160,
-          height: 140,
+          height: 145,
           right: 0,
           child: Stack(
             children: [

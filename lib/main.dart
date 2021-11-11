@@ -1,7 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pedalbrain/modules/user/user.dart';
 import 'package:pedalbrain/screens/pedal_list.dart';
+
+import 'modules/pedal_ui/pedal_ui.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,26 +18,27 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
-          backgroundColor: Colors.black87,
-          appBar: AppBar(
-            backgroundColor: Colors.black,
-          ),
-          body: FutureBuilder(
-            future: _initialization,
-            builder: (context, snapshot) {
-              if (snapshot.hasError) {
-                return Text("INIT: ${snapshot.error.toString()}");
-              }
+        backgroundColor: Colors.black87,
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+        ),
+        body: FutureBuilder(
+          future: _initialization,
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text("INIT: ${snapshot.error.toString()}");
+            }
 
-              // Once complete, show your application
-              if (snapshot.connectionState == ConnectionState.done) {
-                // return PedalUI();
-                return const PedalList();
-              }
+            // Once complete, show your application
+            if (snapshot.connectionState == ConnectionState.done) {
+              return PedalUI();
+              return const PedalList();
+            }
 
-              return const Text('lel');
-            },
-          )),
+            return const Text('lel');
+          },
+        ),
+      ),
     );
   }
 }

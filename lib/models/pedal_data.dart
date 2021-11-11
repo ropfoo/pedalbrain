@@ -8,12 +8,14 @@ class PedalData {
   Dimensions dimensions = Dimensions(width: 300, height: 300);
   List<Knob> knobs = [];
   String name = 'Pedal';
+  bool isEditable = false;
 
   PedalData({
     required this.dimensions,
     required this.knobs,
     required this.position,
     required this.name,
+    required this.isEditable,
   });
 
   PedalData.createFromSnapshot(dynamic snapshotData, KnobOptions knobOptions) {
