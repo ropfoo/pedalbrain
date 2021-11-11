@@ -44,8 +44,8 @@ class _PedalUIState extends State<PedalUI> {
                   initPedalData: PedalData.createFromSnapshot(
                     data,
                     KnobOptions(
-                      isEditable: false,
-                      showLabel: false,
+                      isEditable: isEditMode,
+                      showLabel: true,
                     ),
                   ),
                 ),

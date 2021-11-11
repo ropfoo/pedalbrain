@@ -57,6 +57,8 @@ class Knob extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool shouldRepaint = false;
+    double distance = 0;
     _knobBloc = KnobBloc(initKnobData: initialKnobData);
     return StreamBuilder(
       key: key,
@@ -116,12 +118,19 @@ class Knob extends StatelessWidget {
               child: Column(
                 children: [
                   GestureDetector(
-                    onPanUpdate: (dragUpdateDetails) => {
-                      if (options.isEditable)
+                    onPanUpdate: (dragUpdateDetails) {
+                      if (options.isEditable) {
                         _knobBloc.handlePan(
                           dragUpdateDetails,
                           radius,
-                        ),
+                        );
+                        shouldRepaint =
+                            dragUpdateDetails.delta.distance != distance;
+                        distance = dragUpdateDetails.delta.distance;
+                      }
+                    },
+                    onPanEnd: (dragUpdateDetails) {
+                      shouldRepaint = false;
                     },
                     child: Center(
                       child: Container(
@@ -133,33 +142,32 @@ class Knob extends StatelessWidget {
                         ),
                         constraints: BoxConstraints(maxWidth: radius * 2),
                         child: Center(
-                          child: RepaintBoundary(
-                            child: Stack(
-                              alignment: Alignment.center,
-                              children: [
-                                Positioned(
-                                  child: RepaintBoundary(
-                                    child: CustomPaint(
-                                      painter: CirclePainter(
-                                          radius: radius + .5,
-                                          offset: const Offset(0, 5),
-                                          color: Colors.black54),
+                          child: Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              Positioned(
+                                child: RepaintBoundary(
+                                  child: CustomPaint(
+                                    painter: CirclePainter(
+                                        radius: radius + .5,
+                                        offset: const Offset(0, 5),
+                                        color: Colors.black54),
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                child: RepaintBoundary(
+                                  child: CustomPaint(
+                                    painter: KnobPainter(
+                                      isEditable: shouldRepaint,
+                                      rotation:
+                                          _knobBloc.state.knobData.rotation,
+                                      radius: radius,
                                     ),
                                   ),
                                 ),
-                                Positioned(
-                                  child: RepaintBoundary(
-                                    child: CustomPaint(
-                                      painter: KnobPainter(
-                                        rotation:
-                                            _knobBloc.state.knobData.rotation,
-                                        radius: radius,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
+                              ),
+                            ],
                           ),
                         ),
                       ),

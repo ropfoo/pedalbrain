@@ -3,10 +3,12 @@ import 'package:flutter/material.dart';
 class KnobPainter extends CustomPainter {
   final double rotation;
   final double radius;
+  final bool isEditable;
 
   KnobPainter({
     required this.rotation,
     required this.radius,
+    required this.isEditable,
   });
 
   @override
@@ -19,8 +21,6 @@ class KnobPainter extends CustomPainter {
       Paint(),
     );
 
-    print(radius / 5);
-
     final linePaint = Paint()
       ..color = Colors.white70
       ..strokeWidth = (radius / 5)
@@ -30,8 +30,6 @@ class KnobPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant CustomPainter oldDelegate) {
-    print('test');
-    return false;
-    return oldDelegate != rotation;
+    return isEditable;
   }
 }
