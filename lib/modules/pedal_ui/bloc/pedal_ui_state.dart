@@ -1,6 +1,7 @@
-// import 'package:pedalbrain/models/user_data.dart';
-// import 'package:pedalbrain/modules/user/user.dart';
+import 'package:pedalbrain/models/pedal_data.dart';
 
-// class UserState {
-//   // UserData userData = UserData();
-// }
+class PedalUIState {
+  PedalData? pedalData;
+
+  PedalUIState({this.pedalData});
+}
