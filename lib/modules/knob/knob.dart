@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/knob_data.dart';
-import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/knob/bloc/knob_event.dart';
 import 'package:pedalbrain/widgets/circle_painter.dart';
@@ -12,7 +11,11 @@ import 'knob_label.dart';
 import 'knob_painter.dart';
 
 class Knob extends StatelessWidget {
-  KnobBloc _knobBloc = KnobBloc(initKnobData: KnobData());
+  KnobBloc _knobBloc = KnobBloc(
+    initKnobData: KnobData(
+      options: KnobOptions(),
+    ),
+  );
   final String label;
   final KnobOptions options;
   final double radius;
@@ -36,6 +39,29 @@ class Knob extends StatelessWidget {
         action: KnobAction.updatePos,
         payload: KnobPayload(
           newPos: newPosition,
+        ),
+      ),
+    );
+  }
+
+  void updateOptions(KnobOptions newKnobOptions) {
+    _knobBloc.event.sink.add(
+      KnobEventType(
+        action: KnobAction.updateOptions,
+        payload: KnobPayload(
+          newOptions: newKnobOptions,
+        ),
+      ),
+    );
+  }
+
+  void toggleEditMode() {
+    _knobBloc.event.sink.add(
+      KnobEventType(
+        action: KnobAction.updateOptions,
+        payload: KnobPayload(
+          newOptions: KnobOptions(
+              isEditable: !_knobBloc.state.knobData.options.isEditable),
         ),
       ),
     );
@@ -74,7 +100,7 @@ class Knob extends StatelessWidget {
           top: currYPos,
           child: GestureDetector(
             onPanUpdate: (tapInfo) {
-              if (options.isEditable) {
+              if (_knobBloc.state.knobData.options.isEditable) {
                 double parentWidth =
                     context.findAncestorStateOfType()?.context.size?.width ?? 0;
 
@@ -119,7 +145,7 @@ class Knob extends StatelessWidget {
                 children: [
                   GestureDetector(
                     onPanUpdate: (dragUpdateDetails) {
-                      if (options.isEditable) {
+                      if (_knobBloc.state.knobData.options.isEditable) {
                         _knobBloc.handlePan(
                           dragUpdateDetails,
                           radius,
@@ -173,7 +199,7 @@ class Knob extends StatelessWidget {
                       ),
                     ),
                   ),
-                  if (options.showLabel)
+                  if (_knobBloc.state.knobData.options.showLabel)
                     KnobLabel(
                       key: key,
                       text: label,

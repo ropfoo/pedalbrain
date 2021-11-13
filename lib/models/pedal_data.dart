@@ -44,6 +44,7 @@ class PedalData {
         Knob newKnob = Knob(
           initialKnobData: KnobData(
             position: initKnobPosition,
+            options: KnobOptions(),
           ),
           label: knobLabel,
           options: knobOptions,

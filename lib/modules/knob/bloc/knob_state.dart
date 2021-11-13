@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:pedalbrain/models/knob_data.dart';
 
 class KnobState {
-  KnobData knobData = KnobData();
+  KnobData knobData = KnobData(
+    options: KnobOptions(),
+  );
 
   final _stateController = StreamController<KnobData>.broadcast();
 

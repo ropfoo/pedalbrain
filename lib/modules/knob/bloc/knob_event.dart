@@ -1,22 +1,37 @@
 import 'dart:async';
 
 import 'package:pedalbrain/models/dimensions.dart';
+import 'package:pedalbrain/models/knob_data.dart';
 import 'package:pedalbrain/models/position.dart';
 
-enum KnobAction { turn, updatePos, setDimensions }
+enum KnobAction {
+  turn,
+  updatePos,
+  updateOptions,
+  setDimensions,
+}
 
 class KnobPayload {
   double? rotation;
   Position? newPos;
   Dimensions? newDimensions;
-  KnobPayload({this.rotation, this.newPos, this.newDimensions});
+  KnobOptions? newOptions;
+  KnobPayload({
+    this.rotation,
+    this.newPos,
+    this.newDimensions,
+    this.newOptions,
+  });
 }
 
 class KnobEventType {
   KnobPayload? payload;
   final KnobAction action;
 
-  KnobEventType({this.payload, required this.action});
+  KnobEventType({
+    this.payload,
+    required this.action,
+  });
 }
 
 class KnobEvent {

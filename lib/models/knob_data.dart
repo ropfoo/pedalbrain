@@ -9,8 +9,9 @@ class KnobData {
   String label = 'unnamed';
   Position? position;
   Dimensions? dimensions;
+  KnobOptions options;
 
-  KnobData({this.position});
+  KnobData({this.position, required this.options});
 }
 
 class KnobOptions {

@@ -27,6 +27,10 @@ class KnobBloc {
               event.payload?.newPos ?? Position(x: 0, y: 0);
           break;
 
+        case KnobAction.updateOptions:
+          state.knobData.options = event.payload?.newOptions ?? KnobOptions();
+          break;
+
         case KnobAction.setDimensions:
           state.knobData.dimensions = event.payload?.newDimensions ??
               Dimensions(width: 100, height: 100);
