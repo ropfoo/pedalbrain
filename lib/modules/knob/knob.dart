@@ -140,7 +140,14 @@ class Knob extends StatelessWidget {
               }
             },
             child: Container(
-              // color: Colors.red,
+              decoration: BoxDecoration(
+                color: _knobBloc.state.knobData.options.isEditable
+                    ? Colors.white60
+                    : Colors.transparent,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(10),
+                ),
+              ),
               child: Column(
                 children: [
                   GestureDetector(

@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:pedalbrain/modules/knob/knob.dart';
 import 'package:pedalbrain/modules/pedal/pedal.dart';
 import 'package:pedalbrain/modules/pedal_ui/bloc/pedal_ui_bloc.dart';
+import 'package:pedalbrain/modules/pedal_ui/pedal_ui_knob_selection.dart';
+import 'package:pedalbrain/widgets/arrow_button.dart';
 
 class PedalUI extends StatelessWidget {
   PedalUI({Key? key}) : super(key: key);
@@ -12,7 +13,15 @@ class PedalUI extends StatelessWidget {
   List<KnobSelection> getKnobOptions(List<Knob> knobs) {
     List<KnobSelection> knobOptions = [];
     for (var knob in knobs) {
-      knobOptions.add(KnobSelection(knob: knob));
+      knobOptions.add(
+        KnobSelection(
+          knob: knob,
+          onPress: () {
+            _pedalUIBloc.setOverlay(true);
+            _pedalUIBloc.selectOption(knob);
+          },
+        ),
+      );
     }
     return knobOptions;
   }
@@ -38,40 +47,53 @@ class PedalUI extends StatelessWidget {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.only(
-                  top: 30,
-                  left: 20,
-                  right: 0,
-                  bottom: 10,
-                ),
-                child: Column(
-                  children: [
-                    Row(
-                      children: [
-                        Container(
-                          margin: const EdgeInsets.only(bottom: 15),
-                          child: Text(
-                            _pedalUIBloc.state.pedalData!.name,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 24,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
+                decoration: const BoxDecoration(
+                  border: Border(
+                    top: BorderSide(
+                      color: Color(0xff383838),
+                      width: 2,
                     ),
-                    SizedBox(
-                      height: 200,
-                      child: ListView(
+                  ),
+                ),
+                child: Stack(
+                  children: [
+                    Positioned(
+                      child: Column(
                         children: [
-                          ...getKnobOptions(
-                              _pedalUIBloc.state.pedalData!.knobs),
-                          ...getKnobOptions(
-                              _pedalUIBloc.state.pedalData!.knobs),
-                          ...getKnobOptions(
-                              _pedalUIBloc.state.pedalData!.knobs),
+                          Row(
+                            children: [
+                              Container(
+                                padding: const EdgeInsets.only(
+                                  top: 30,
+                                  left: 20,
+                                  right: 0,
+                                ),
+                                margin: const EdgeInsets.only(bottom: 15),
+                                child: Text(
+                                  _pedalUIBloc.state.pedalData!.name,
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(
+                            height: 200,
+                            child: ListView(
+                              children: getKnobOptions(
+                                  _pedalUIBloc.state.pedalData!.knobs),
+                            ),
+                          )
                         ],
+                      ),
+                    ),
+                    Positioned(
+                      child: KnobSelectionMenu(
+                        isVisible: _pedalUIBloc.state.showOverlay ?? false,
+                        selection: _pedalUIBloc.state.activeSelection,
                       ),
                     )
                   ],
@@ -86,51 +108,79 @@ class PedalUI extends StatelessWidget {
   }
 }
 
-class KnobSelection extends StatelessWidget {
-  final Knob knob;
+class KnobSelectionMenu extends StatefulWidget {
+  final bool isVisible;
+  final Knob? selection;
 
-  KnobSelection({Key? key, required this.knob}) : super(key: key);
+  const KnobSelectionMenu({
+    Key? key,
+    required this.isVisible,
+    required this.selection,
+  }) : super(key: key);
 
-  final Widget knobSVG = SvgPicture.asset(
-    'assets/icons/knob.svg',
-    semanticsLabel: 'Acme Logo',
-    width: 35,
-    height: 35,
+  @override
+  State<KnobSelectionMenu> createState() => _KnobSelectionMenuState();
+}
+
+class _KnobSelectionMenuState extends State<KnobSelectionMenu>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    duration: const Duration(milliseconds: 300),
+    vsync: this,
+  );
+
+  late final Animation<Offset> _offsetAnimation = Tween<Offset>(
+    begin: const Offset(1, 0.0),
+    end: Offset.zero,
+  ).animate(
+    CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    ),
   );
 
   @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return TextButton(
-      onPressed: () => knob.toggleEditMode(),
-      child: Container(
-        padding: const EdgeInsets.symmetric(
-          vertical: 18,
-          horizontal: 25,
-        ),
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(35),
-            bottomLeft: Radius.circular(35),
-          ),
-          color: Color(0xFF161616),
-        ),
-        child: Row(
-          children: [
-            knobSVG,
-            Container(
-              padding: const EdgeInsets.only(left: 20),
-              child: Text(
-                knob.label,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
+    if (widget.isVisible) {
+      _controller.forward();
+    }
+
+    return SlideTransition(
+      position: _offsetAnimation,
+      child: widget.selection != null
+          ? Container(
+              width: 500,
+              height: 250,
+              color: const Color(0xff000913),
+              child: Column(
+                children: [
+                  Row(
+                    children: [
+                      ArrowButton(
+                        onPressed: () {
+                          _controller.reverse();
+                          widget.selection!.toggleEditMode();
+                        },
+                      ),
+                      Text(
+                        widget.selection!.label,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 24,
+                        ),
+                      )
+                    ],
+                  ),
+                ],
               ),
-            ),
-          ],
-        ),
-      ),
+            )
+          : Container(),
     );
   }
 }

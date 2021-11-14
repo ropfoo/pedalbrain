@@ -39,6 +39,16 @@ class PedalUIBloc {
     _subjectPedalUI.add(PedalUIState(pedalData: pedalData));
   }
 
+  void setOverlay(bool showOverlay) {
+    state.showOverlay = showOverlay;
+    _subjectPedalUI.add(PedalUIState());
+  }
+
+  void selectOption(selection) {
+    state.activeSelection = selection;
+    _subjectPedalUI.add(PedalUIState());
+  }
+
   void dispose() {
     _subjectPedalUI.close();
   }
