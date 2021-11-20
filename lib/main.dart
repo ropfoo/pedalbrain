@@ -1,8 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:pedalbrain/screens/pedal_list.dart';
-
-import 'modules/pedal_ui/pedal_ui.dart';
+import 'package:pedalbrain/screens/pedal_list_screen.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,8 +29,7 @@ class App extends StatelessWidget {
 
             // Once complete, show your application
             if (snapshot.connectionState == ConnectionState.done) {
-              return PedalUI();
-              return const PedalList();
+              return const PedalListScreen();
             }
 
             return const Text('lel');

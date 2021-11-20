@@ -38,8 +38,8 @@ class PedalData {
         int x = knobPosition['x'];
         int y = knobPosition['y'];
         Position initKnobPosition = Position(
-          x: x.toDouble() * knobOptions.resizeFactor,
-          y: y.toDouble() * knobOptions.resizeFactor,
+          x: x.toDouble(),
+          y: y.toDouble(),
         );
         Knob newKnob = Knob(
           initialKnobData: KnobData(
@@ -48,7 +48,7 @@ class PedalData {
           ),
           label: knobLabel,
           options: knobOptions,
-          radius: knobRadius.toDouble() * knobOptions.resizeFactor,
+          radius: knobRadius.toDouble(),
         );
         knobs.add(newKnob);
       }

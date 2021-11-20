@@ -9,8 +9,10 @@ import 'package:pedalbrain/widgets/circle_button.dart';
 
 class Pedal extends StatelessWidget {
   final PedalData initPedalData;
+  final double scale;
 
-  Pedal({Key? key, required this.initPedalData}) : super(key: key);
+  Pedal({Key? key, required this.initPedalData, required this.scale})
+      : super(key: key);
 
   final Widget resizeSVG = SvgPicture.asset(
     'assets/icons/resize.svg',
@@ -35,129 +37,135 @@ class Pedal extends StatelessWidget {
         return Positioned(
           left: currXPos,
           top: currYPos,
-          child: Column(
-            children: [
-              GestureDetector(
-                onPanUpdate: (tapInfo) {
-                  if (_pedalBloc.state.pedalData.isEditable) {
-                    _pedalBloc.event.sink.add(
-                      PedalEventType(
-                        action: PedalAction.upatePos,
-                        payload: PedalPayload(
-                          newPos: Position(
-                            x: currXPos + tapInfo.delta.dx,
-                            y: currYPos + tapInfo.delta.dy,
+          child: Transform.scale(
+            scale: scale,
+            child: Column(
+              children: [
+                GestureDetector(
+                  onPanUpdate: (tapInfo) {
+                    if (_pedalBloc.state.pedalData.isEditable) {
+                      _pedalBloc.event.sink.add(
+                        PedalEventType(
+                          action: PedalAction.upatePos,
+                          payload: PedalPayload(
+                            newPos: Position(
+                              x: currXPos + tapInfo.delta.dx,
+                              y: currYPos + tapInfo.delta.dy,
+                            ),
+                          ),
+                        ),
+                      );
+                    }
+                  },
+                  onTap: () => _pedalBloc.event.sink.add(
+                    PedalEventType(
+                      action: PedalAction.toggleEditable,
+                    ),
+                  ),
+                  child: Stack(
+                    children: [
+                      if (_pedalBloc.state.pedalData.isEditable)
+                        Positioned(
+                          child: Container(
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10),
+                                color: Colors.white),
+                            width: _pedalBloc.state.pedalData.dimensions.width +
+                                10,
+                            height:
+                                _pedalBloc.state.pedalData.dimensions.height +
+                                    0.13 *
+                                        _pedalBloc
+                                            .state.pedalData.dimensions.height +
+                                    10,
+                          ),
+                        ),
+                      Positioned(
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 5, top: 5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.amber),
+                          width: _pedalBloc.state.pedalData.dimensions.width,
+                          height: _pedalBloc.state.pedalData.dimensions.height +
+                              0.13 *
+                                  _pedalBloc.state.pedalData.dimensions.height,
+                        ),
+                      ),
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        child: Container(
+                          margin: const EdgeInsets.only(left: 5, top: 5),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.amberAccent),
+                          width: _pedalBloc.state.pedalData.dimensions.width,
+                          height: _pedalBloc.state.pedalData.dimensions.height,
+                          padding: const EdgeInsets.all(10),
+                          child: Stack(
+                            children: _pedalBloc.state.pedalData.knobs,
                           ),
                         ),
                       ),
-                    );
-                  }
-                },
-                onTap: () => _pedalBloc.event.sink.add(
-                  PedalEventType(
-                    action: PedalAction.toggleEditable,
+                    ],
                   ),
                 ),
-                child: Stack(
-                  children: [
-                    if (_pedalBloc.state.pedalData.isEditable)
-                      Positioned(
-                        child: Container(
-                          alignment: Alignment.center,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              color: Colors.white),
-                          width:
-                              _pedalBloc.state.pedalData.dimensions.width + 10,
-                          height: _pedalBloc.state.pedalData.dimensions.height +
-                              0.13 *
-                                  _pedalBloc.state.pedalData.dimensions.height +
-                              10,
-                        ),
-                      ),
-                    Positioned(
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 5, top: 5),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.amber),
-                        width: _pedalBloc.state.pedalData.dimensions.width,
-                        height: _pedalBloc.state.pedalData.dimensions.height +
-                            0.13 * _pedalBloc.state.pedalData.dimensions.height,
-                      ),
-                    ),
-                    Positioned(
-                      top: 0,
-                      left: 0,
-                      child: Container(
-                        margin: const EdgeInsets.only(left: 5, top: 5),
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            color: Colors.amberAccent),
-                        width: _pedalBloc.state.pedalData.dimensions.width,
-                        height: _pedalBloc.state.pedalData.dimensions.height,
-                        padding: const EdgeInsets.all(10),
-                        child: Stack(
-                          children: _pedalBloc.state.pedalData.knobs,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Container(
-                alignment: Alignment.bottomRight,
-                width: _pedalBloc.state.pedalData.dimensions.width + 100,
-                child: _pedalBloc.state.pedalData.isEditable
-                    ? GestureDetector(
-                        onPanUpdate: (tapInfo) {
-                          _pedalBloc.event.sink.add(
-                            PedalEventType(
-                              action: PedalAction.updateDimesnions,
-                              payload: PedalPayload(
-                                newDimensions: Dimensions(
-                                  width: currWidth + tapInfo.delta.dx,
-                                  height: currHeight + tapInfo.delta.dy,
+                Container(
+                  alignment: Alignment.bottomRight,
+                  width: _pedalBloc.state.pedalData.dimensions.width + 100,
+                  child: _pedalBloc.state.pedalData.isEditable
+                      ? GestureDetector(
+                          onPanUpdate: (tapInfo) {
+                            _pedalBloc.event.sink.add(
+                              PedalEventType(
+                                action: PedalAction.updateDimesnions,
+                                payload: PedalPayload(
+                                  newDimensions: Dimensions(
+                                    width: currWidth + tapInfo.delta.dx,
+                                    height: currHeight + tapInfo.delta.dy,
+                                  ),
                                 ),
                               ),
-                            ),
-                          );
+                            );
 
-                          for (var knob in _pedalBloc.state.pedalData.knobs) {
-                            if (_pedalBloc.state.pedalData.dimensions.height <
-                                (knob.getPosition().y +
-                                    knob.getDimensions().height)) {
-                              knob.updatePosition(
-                                Position(
-                                  x: knob.getPosition().x,
-                                  y: currHeight +
-                                      tapInfo.delta.dy -
-                                      knob.getDimensions().height,
-                                ),
-                              );
-                            }
+                            for (var knob in _pedalBloc.state.pedalData.knobs) {
+                              if (_pedalBloc.state.pedalData.dimensions.height <
+                                  (knob.getPosition().y +
+                                      knob.getDimensions().height)) {
+                                knob.updatePosition(
+                                  Position(
+                                    x: knob.getPosition().x,
+                                    y: currHeight +
+                                        tapInfo.delta.dy -
+                                        knob.getDimensions().height,
+                                  ),
+                                );
+                              }
 
-                            if (_pedalBloc.state.pedalData.dimensions.width <
-                                (knob.getPosition().x +
-                                    knob.getDimensions().width)) {
-                              knob.updatePosition(
-                                Position(
-                                  x: currWidth +
-                                      tapInfo.delta.dx -
-                                      knob.getDimensions().width,
-                                  y: knob.getPosition().y,
-                                ),
-                              );
+                              if (_pedalBloc.state.pedalData.dimensions.width <
+                                  (knob.getPosition().x +
+                                      knob.getDimensions().width)) {
+                                knob.updatePosition(
+                                  Position(
+                                    x: currWidth +
+                                        tapInfo.delta.dx -
+                                        knob.getDimensions().width,
+                                    y: knob.getPosition().y,
+                                  ),
+                                );
+                              }
                             }
-                          }
-                        },
-                        child: CircleButton(
-                          icon: resizeSVG,
-                        ),
-                      )
-                    : Container(),
-              )
-            ],
+                          },
+                          child: CircleButton(
+                            icon: resizeSVG,
+                          ),
+                        )
+                      : Container(),
+                )
+              ],
+            ),
           ),
         );
       },

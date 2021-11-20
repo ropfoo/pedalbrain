@@ -4,17 +4,12 @@ import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/knob_data.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/models/position.dart';
-import 'package:pedalbrain/modules/pedal/pedal.dart';
+import 'package:pedalbrain/modules/pedal_list/pedal_list_item.dart';
 
-class PedalList extends StatefulWidget {
-  const PedalList({Key? key}) : super(key: key);
+class PedalList extends StatelessWidget {
+  PedalList({Key? key}) : super(key: key);
 
-  @override
-  _PedalListState createState() => _PedalListState();
-}
-
-class _PedalListState extends State<PedalList> {
-  CollectionReference pedals = FirebaseFirestore.instance
+  final CollectionReference pedals = FirebaseFirestore.instance
       .collection('users')
       .doc('So6Y0xYBudc4jDDEjGNM')
       .collection('pedals');
@@ -29,21 +24,14 @@ class _PedalListState extends State<PedalList> {
 
   List<PedalListItem> getPedalListItems(List<dynamic> list) {
     List<PedalListItem> pedalListItems = [];
-    var resizeFactor = .35;
     for (var item in list) {
       var pedalData = PedalData.createFromSnapshot(
         item,
         KnobOptions(
           isEditable: false,
           showLabel: false,
-          resizeFactor: resizeFactor,
         ),
       );
-
-      pedalData.dimensions = Dimensions(
-          width: pedalData.dimensions.width * resizeFactor,
-          height: pedalData.dimensions.height * resizeFactor);
-      pedalData.position = Position(x: 0, y: 20);
       pedalListItems.add(PedalListItem(
         pedalData: pedalData,
       ));
@@ -87,58 +75,6 @@ class _PedalListState extends State<PedalList> {
           )
         ],
       ),
-    );
-  }
-}
-
-class PedalListItem extends StatelessWidget {
-  final PedalData pedalData;
-
-  const PedalListItem({Key? key, required this.pedalData}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 145,
-      alignment: Alignment.topLeft,
-      margin: const EdgeInsets.only(bottom: 20),
-      child: Stack(children: [
-        Positioned(
-          height: 120,
-          width: 500,
-          child: Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment(0.8, 0.0),
-                colors: <Color>[Colors.transparent, Colors.amber],
-                tileMode: TileMode.repeated,
-              ),
-            ),
-            alignment: Alignment.centerLeft,
-            child: Text(
-              pedalData.name,
-              style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 21,
-                color: Colors.white,
-              ),
-            ),
-          ),
-        ),
-        Positioned(
-          width: 160,
-          height: 145,
-          right: 0,
-          child: Stack(
-            children: [
-              Pedal(
-                initPedalData: pedalData,
-              ),
-            ],
-          ),
-        ),
-      ]),
     );
   }
 }

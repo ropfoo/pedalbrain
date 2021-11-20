@@ -9,8 +9,8 @@ class PedalUIBloc {
   final BehaviorSubject<PedalUIState> _subjectPedalUI =
       BehaviorSubject<PedalUIState>.seeded(PedalUIState());
 
-  PedalUIBloc() {
-    initPedalData();
+  PedalUIBloc(PedalData initPedalData) {
+    state.pedalData = initPedalData;
   }
 
   Stream<PedalUIState> get stream => _subjectPedalUI.stream;
