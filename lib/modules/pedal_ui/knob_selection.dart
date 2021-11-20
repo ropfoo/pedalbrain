@@ -23,7 +23,9 @@ class KnobSelection extends StatelessWidget {
     return Column(
       children: [
         TextButton(
-          style: TextButton.styleFrom(padding: EdgeInsets.zero),
+          style: TextButton.styleFrom(
+            padding: const EdgeInsets.only(bottom: 15),
+          ),
           onPressed: () {
             onPress();
             knob.toggleEditMode();

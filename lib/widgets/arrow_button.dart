@@ -8,8 +8,8 @@ class ArrowButton extends StatelessWidget {
   final Widget arrowSVG = SvgPicture.asset(
     'assets/icons/arrow.svg',
     semanticsLabel: 'Acme Logo',
-    width: 20,
-    height: 20,
+    width: 18,
+    height: 18,
   );
 
   @override

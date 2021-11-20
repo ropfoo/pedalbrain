@@ -8,7 +8,7 @@ class PedalListScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black87,
+      backgroundColor: const Color(0xFF0B0B0B),
       body: PedalList(),
     );
   }

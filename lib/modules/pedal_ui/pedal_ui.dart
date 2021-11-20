@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
+import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/knob/knob.dart';
 import 'package:pedalbrain/modules/pedal/pedal.dart';
 import 'package:pedalbrain/modules/pedal_ui/bloc/pedal_ui_bloc.dart';
@@ -18,7 +19,6 @@ class PedalUI extends StatelessWidget {
   }) : super(key: key);
 
   Future<bool> _navigateBack(BuildContext context) async {
-    print('sdsd');
     Navigator.of(context).pop(true);
     _pedalUIBloc.updatePedalData();
     onLeave();
@@ -44,6 +44,7 @@ class PedalUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _pedalUIBloc = PedalUIBloc(initPedalData);
+    initPedalData.position = Position(x: 50, y: 50);
     return WillPopScope(
       onWillPop: () => _navigateBack(context),
       child: StreamBuilder<Object>(

@@ -22,7 +22,9 @@ class PedalListItem extends StatelessWidget {
       alignment: Alignment.topLeft,
       margin: const EdgeInsets.only(bottom: 20),
       child: TextButton(
-        style: TextButton.styleFrom(padding: EdgeInsets.zero),
+        style: TextButton.styleFrom(
+          padding: EdgeInsets.zero,
+        ),
         onPressed: () => Navigator.push(
           context,
           MaterialPageRoute(

@@ -24,12 +24,17 @@ class App extends StatelessWidget {
             color: Colors.white,
             fontWeight: FontWeight.bold,
           ),
+          headline4: TextStyle(
+            fontSize: 24.0,
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
       home: Scaffold(
         backgroundColor: Colors.black87,
         appBar: AppBar(
-          backgroundColor: Colors.black,
+          backgroundColor: const Color(0xFF0B0B0B),
         ),
         body: FutureBuilder(
           future: _initialization,
@@ -43,10 +48,11 @@ class App extends StatelessWidget {
               return const PedalListScreen();
             }
 
-            return const Text('lel');
+            return const Text('loading');
           },
         ),
         bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: Colors.black,
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home),

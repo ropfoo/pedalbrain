@@ -50,26 +50,27 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
       child: widget.selection != null
           ? Container(
               width: 500,
-              height: 250,
+              height: 290,
               color: const Color(0xff000913),
               child: Column(
                 children: [
-                  Row(
-                    children: [
-                      ArrowButton(
-                        onPressed: () {
-                          _controller.reverse();
-                          widget.selection!.toggleEditMode();
-                        },
-                      ),
-                      Text(
-                        widget.selection!.label,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 24,
+                  Container(
+                    margin: const EdgeInsets.only(top: 20, left: 15, right: 15),
+                    child: Row(
+                      children: [
+                        ArrowButton(
+                          onPressed: () {
+                            _controller.reverse();
+                            widget.selection!.toggleEditMode();
+                          },
                         ),
-                      )
-                    ],
+                        Container(
+                          margin: const EdgeInsets.only(left: 25),
+                          child: Text(widget.selection!.label,
+                              style: Theme.of(context).textTheme.headline4),
+                        )
+                      ],
+                    ),
                   ),
                 ],
               ),

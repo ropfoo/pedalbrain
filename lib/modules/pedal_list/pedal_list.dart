@@ -20,10 +20,7 @@ class PedalList extends StatelessWidget {
       );
       pedalListItems.add(PedalListItem(
         pedalData: pedalData,
-        onLeave: () {
-          _pedalListBloc.getData();
-          print('lel');
-        },
+        onLeave: () => _pedalListBloc.getData(),
       ));
     }
     return pedalListItems;
@@ -53,7 +50,7 @@ class PedalList extends StatelessWidget {
                     children: getPedalListItems(_pedalListBloc.state.listData),
                   );
                 } else {
-                  return Text('no pedal data');
+                  return const Text('no pedal data');
                 }
               },
             ),
