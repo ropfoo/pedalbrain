@@ -14,6 +14,7 @@ class KnobSelection extends StatelessWidget {
   final Widget knobSVG = SvgPicture.asset(
     'assets/icons/knob.svg',
     semanticsLabel: 'Acme Logo',
+    color: const Color(0xFF2B2F79),
     width: 35,
     height: 35,
   );
@@ -40,7 +41,7 @@ class KnobSelection extends StatelessWidget {
                 topLeft: Radius.circular(35),
                 bottomLeft: Radius.circular(35),
               ),
-              color: Color(0xFF000913),
+              color: Color(0xFF00042C),
             ),
             child: Row(
               children: [

@@ -56,7 +56,7 @@ class PedalUI extends StatelessWidget {
                 Container(
                   width: 500,
                   height: 500,
-                  color: const Color(0xFF0B0B0B),
+                  color: const Color(0xFF040013),
                   child: Hero(
                     tag: 1,
                     child: Stack(

@@ -42,7 +42,7 @@ class PedalListItem extends StatelessWidget {
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,
-                  end: Alignment(0.8, 0.0),
+                  end: Alignment(1, 0.0),
                   colors: <Color>[Colors.transparent, Colors.amber],
                   tileMode: TileMode.repeated,
                 ),
@@ -66,7 +66,7 @@ class PedalListItem extends StatelessWidget {
               children: [
                 Pedal(
                   initPedalData: pedalData,
-                  scale: .3,
+                  scale: .35,
                 ),
               ],
             ),

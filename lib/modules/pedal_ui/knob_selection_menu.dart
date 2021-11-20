@@ -51,7 +51,7 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
           ? Container(
               width: 500,
               height: 290,
-              color: const Color(0xff000913),
+              color: const Color(0xff00042C),
               child: Column(
                 children: [
                   Container(

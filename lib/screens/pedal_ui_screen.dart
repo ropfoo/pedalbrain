@@ -16,7 +16,7 @@ class PedalUIScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.black,
+        backgroundColor: const Color(0xFF040013),
       ),
       backgroundColor: Colors.black87,
       body: PedalUI(
