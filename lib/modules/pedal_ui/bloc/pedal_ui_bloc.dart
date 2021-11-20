@@ -39,6 +39,19 @@ class PedalUIBloc {
     _subjectPedalUI.add(PedalUIState(pedalData: pedalData));
   }
 
+  void updatePedalData() async {
+    final CollectionReference pedals = FirebaseFirestore.instance
+        .collection('users')
+        .doc('So6Y0xYBudc4jDDEjGNM')
+        .collection('pedals');
+
+    final pedalDataDoc = pedals.doc('f4fkYjHnvVStEnMEllQ4');
+
+    var data = state.pedalData?.toJson();
+
+    if (data != null) pedalDataDoc.update(data);
+  }
+
   void setOverlay(bool showOverlay) {
     state.showOverlay = showOverlay;
     _subjectPedalUI.add(PedalUIState());

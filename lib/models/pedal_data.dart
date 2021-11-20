@@ -10,6 +10,31 @@ class PedalData {
   String name = 'Pedal';
   bool isEditable = false;
 
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'dimensions': {
+          'width': dimensions.width,
+          'height': dimensions.height,
+        },
+        'knobs': _knobsToJson()
+      };
+
+  List<Map<String, dynamic>> _knobsToJson() {
+    List<Map<String, dynamic>> knobsData = [];
+    for (var knob in knobs) {
+      knobsData.add({
+        'label': knob.label,
+        'radius': knob.radius,
+        'position': {
+          'x': knob.initialKnobData.position?.x,
+          'y': knob.initialKnobData.position?.y,
+        },
+      });
+    }
+
+    return knobsData;
+  }
+
   PedalData({
     required this.dimensions,
     required this.knobs,
@@ -21,8 +46,8 @@ class PedalData {
   PedalData.createFromSnapshot(dynamic snapshotData, KnobOptions knobOptions) {
     var data = snapshotData as Map<String, dynamic>;
     var dataDimensions = data['dimensions'];
-    int width = dataDimensions['width'];
-    int height = dataDimensions['height'];
+    num width = dataDimensions['width'];
+    num height = dataDimensions['height'];
     var initDimensions = Dimensions(
       width: width.toDouble(),
       height: height.toDouble(),
@@ -33,10 +58,10 @@ class PedalData {
 
       for (var knobData in data['knobs']) {
         String knobLabel = knobData['label'];
-        int knobRadius = knobData['radius'];
+        num knobRadius = knobData['radius'];
         var knobPosition = knobData['position'];
-        int x = knobPosition['x'];
-        int y = knobPosition['y'];
+        num x = knobPosition['x'];
+        num y = knobPosition['y'];
         Position initKnobPosition = Position(
           x: x.toDouble(),
           y: y.toDouble(),

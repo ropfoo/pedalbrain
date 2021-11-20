@@ -9,7 +9,21 @@ import 'package:pedalbrain/modules/pedal_ui/knob_selection.dart';
 class PedalUI extends StatelessWidget {
   final PedalData initPedalData;
   late PedalUIBloc _pedalUIBloc;
-  PedalUI({Key? key, required this.initPedalData}) : super(key: key);
+  final Function onLeave;
+
+  PedalUI({
+    Key? key,
+    required this.initPedalData,
+    required this.onLeave,
+  }) : super(key: key);
+
+  Future<bool> _navigateBack(BuildContext context) async {
+    print('sdsd');
+    Navigator.of(context).pop(true);
+    _pedalUIBloc.updatePedalData();
+    onLeave();
+    return false;
+  }
 
   List<KnobSelection> getKnobOptions(List<Knob> knobs) {
     List<KnobSelection> knobOptions = [];
@@ -30,86 +44,89 @@ class PedalUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _pedalUIBloc = PedalUIBloc(initPedalData);
-    return StreamBuilder<Object>(
-      stream: _pedalUIBloc.stream,
-      builder: (context, snapshot) {
-        if (_pedalUIBloc.state.pedalData != null) {
-          return Column(
-            children: [
-              Container(
-                width: 500,
-                height: 500,
-                color: const Color(0xFF0B0B0B),
-                child: Hero(
-                  tag: 1,
+    return WillPopScope(
+      onWillPop: () => _navigateBack(context),
+      child: StreamBuilder<Object>(
+        stream: _pedalUIBloc.stream,
+        builder: (context, snapshot) {
+          if (_pedalUIBloc.state.pedalData != null) {
+            return Column(
+              children: [
+                Container(
+                  width: 500,
+                  height: 500,
+                  color: const Color(0xFF0B0B0B),
+                  child: Hero(
+                    tag: 1,
+                    child: Stack(
+                      children: [
+                        Pedal(
+                          initPedalData: _pedalUIBloc.state.pedalData!,
+                          scale: 1,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      top: BorderSide(
+                        color: Color(0xff383838),
+                        width: 2,
+                      ),
+                    ),
+                  ),
                   child: Stack(
                     children: [
-                      Pedal(
-                        initPedalData: _pedalUIBloc.state.pedalData!,
-                        scale: 1,
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              Container(
-                decoration: const BoxDecoration(
-                  border: Border(
-                    top: BorderSide(
-                      color: Color(0xff383838),
-                      width: 2,
-                    ),
-                  ),
-                ),
-                child: Stack(
-                  children: [
-                    Positioned(
-                      child: Column(
-                        children: [
-                          Row(
-                            children: [
-                              Container(
-                                padding: const EdgeInsets.only(
-                                  top: 30,
-                                  left: 20,
-                                  right: 0,
-                                ),
-                                margin: const EdgeInsets.only(bottom: 15),
-                                child: Text(
-                                  _pedalUIBloc.state.pedalData!.name,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
+                      Positioned(
+                        child: Column(
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  padding: const EdgeInsets.only(
+                                    top: 30,
+                                    left: 20,
+                                    right: 0,
+                                  ),
+                                  margin: const EdgeInsets.only(bottom: 15),
+                                  child: Text(
+                                    _pedalUIBloc.state.pedalData!.name,
+                                    style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: 200,
-                            child: ListView(
-                              children: getKnobOptions(
-                                  _pedalUIBloc.state.pedalData!.knobs),
+                              ],
                             ),
-                          )
-                        ],
+                            SizedBox(
+                              height: 200,
+                              child: ListView(
+                                children: getKnobOptions(
+                                    _pedalUIBloc.state.pedalData!.knobs),
+                              ),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                    Positioned(
-                      child: KnobSelectionMenu(
-                        isVisible: _pedalUIBloc.state.showOverlay ?? false,
-                        selection: _pedalUIBloc.state.activeSelection,
-                      ),
-                    )
-                  ],
-                ),
-              )
-            ],
-          );
-        }
-        return const Text('no data');
-      },
+                      Positioned(
+                        child: KnobSelectionMenu(
+                          isVisible: _pedalUIBloc.state.showOverlay ?? false,
+                          selection: _pedalUIBloc.state.activeSelection,
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            );
+          }
+          return const Text('no data');
+        },
+      ),
     );
   }
 }

@@ -6,10 +6,12 @@ import 'package:pedalbrain/screens/pedal_ui_screen.dart';
 
 class PedalListItem extends StatelessWidget {
   final PedalData pedalData;
+  final Function onLeave;
 
   const PedalListItem({
     Key? key,
     required this.pedalData,
+    required this.onLeave,
   }) : super(key: key);
 
   @override
@@ -26,6 +28,7 @@ class PedalListItem extends StatelessWidget {
           MaterialPageRoute(
             builder: (_) => PedalUIScreen(
               pedalData: pedalData,
+              onLeave: onLeave,
             ),
           ),
         ),
