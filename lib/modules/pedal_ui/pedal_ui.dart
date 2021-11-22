@@ -73,7 +73,7 @@ class PedalUI extends StatelessWidget {
                   decoration: const BoxDecoration(
                     border: Border(
                       top: BorderSide(
-                        color: Color(0xff383838),
+                        color: Color(0xff97A1FF),
                         width: 2,
                       ),
                     ),

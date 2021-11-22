@@ -39,6 +39,7 @@ class PedalListItem extends StatelessWidget {
             height: 120,
             width: 500,
             child: Container(
+              padding: const EdgeInsets.only(left: 20),
               decoration: const BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topLeft,

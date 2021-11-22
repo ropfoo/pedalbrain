@@ -7,7 +7,7 @@ class ArrowButton extends StatelessWidget {
   ArrowButton({Key? key, required this.onPressed}) : super(key: key);
   final Widget arrowSVG = SvgPicture.asset(
     'assets/icons/arrow.svg',
-    semanticsLabel: 'Acme Logo',
+    semanticsLabel: 'arrow',
     width: 18,
     height: 18,
   );
@@ -24,7 +24,7 @@ class ArrowButton extends StatelessWidget {
         decoration: BoxDecoration(
           border: Border.all(
             width: 2,
-            color: const Color(0xff353535),
+            color: const Color(0xff97A1FF),
           ),
           borderRadius: BorderRadius.circular(40),
         ),

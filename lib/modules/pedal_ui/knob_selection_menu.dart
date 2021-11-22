@@ -66,8 +66,10 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
                         ),
                         Container(
                           margin: const EdgeInsets.only(left: 25),
-                          child: Text(widget.selection!.label,
-                              style: Theme.of(context).textTheme.headline4),
+                          child: Text(
+                            widget.selection!.label,
+                            style: Theme.of(context).textTheme.headline4,
+                          ),
                         )
                       ],
                     ),
