@@ -43,6 +43,31 @@ class PedalUI extends StatelessWidget {
     return knobOptions;
   }
 
+  void _onSelectedMain(dynamic choice, BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          height: 300,
+          color: Colors.amber,
+          child: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text('Modal BottomSheet'),
+                ElevatedButton(
+                  child: const Text('Close BottomSheet'),
+                  onPressed: () => Navigator.pop(context),
+                )
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     _pedalUIBloc = PedalUIBloc(initPedalData);
@@ -105,9 +130,23 @@ class PedalUI extends StatelessWidget {
                                   ),
                                 ),
                                 PopupMenuButton(
-                                  itemBuilder: (context) => [
+                                  onSelected: (choice) =>
+                                      _onSelectedMain(choice, context),
+                                  color: const Color(0xff615EFF),
+                                  itemBuilder: (ctx) => [
                                     const PopupMenuItem(
-                                      child: Text('Rename'),
+                                      value: "rename",
+                                      child: Text(
+                                        'Rename',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                    const PopupMenuItem(
+                                      value: "color",
+                                      child: Text(
+                                        'Color',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
                                     ),
                                   ],
                                 )

@@ -18,6 +18,11 @@ class App extends StatelessWidget {
       title: 'Pedalbrain',
       theme: ThemeData(
         brightness: Brightness.dark,
+        popupMenuTheme: PopupMenuThemeData(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+        ),
         textTheme: const TextTheme(
           headline1: TextStyle(
             fontSize: 45.0,

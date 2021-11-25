@@ -60,7 +60,7 @@ class PedalUIBloc {
 
     var data = state.pedalData?.toJson();
 
-    var pefalDoc = await pedals.add(data);
+    pedals.add(data);
   }
 
   void setOverlay(bool showOverlay) {
