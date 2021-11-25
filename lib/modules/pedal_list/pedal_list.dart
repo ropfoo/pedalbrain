@@ -3,6 +3,7 @@ import 'package:pedalbrain/models/knob_data.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/modules/pedal_list/bloc/pedal_list_bloc.dart';
 import 'package:pedalbrain/modules/pedal_list/pedal_list_item.dart';
+import 'package:pedalbrain/screens/pedal_ui_screen.dart';
 import 'package:pedalbrain/widgets/add_button.dart';
 
 class PedalList extends StatelessWidget {
@@ -21,7 +22,10 @@ class PedalList extends StatelessWidget {
       );
       pedalListItems.add(PedalListItem(
         pedalData: pedalData,
-        onLeave: () => _pedalListBloc.getData(),
+        onLeave: (update, add) {
+          _pedalListBloc.getData();
+          update();
+        },
       ));
     }
     return pedalListItems;
@@ -42,13 +46,24 @@ class PedalList extends StatelessWidget {
                 style: Theme.of(context).textTheme.headline1,
               ),
               AddButton(
-                onPressed: () {},
+                onPressed: () => Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (_) => PedalUIScreen(
+                      pedalData: PedalData.createDefault(),
+                      onLeave: (upade, add) {
+                        _pedalListBloc.getData();
+                        add();
+                      },
+                    ),
+                  ),
+                ),
               ),
             ],
           ),
         ),
         SizedBox(
-          height: 300,
+          height: 550,
           child: StreamBuilder(
             stream: _pedalListBloc.stream,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

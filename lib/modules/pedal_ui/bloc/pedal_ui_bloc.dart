@@ -45,11 +45,22 @@ class PedalUIBloc {
         .doc('So6Y0xYBudc4jDDEjGNM')
         .collection('pedals');
 
-    final pedalDataDoc = pedals.doc('f4fkYjHnvVStEnMEllQ4');
+    final pedalDataDoc = pedals.doc(state.pedalData?.id);
 
     var data = state.pedalData?.toJson();
 
     if (data != null) pedalDataDoc.update(data);
+  }
+
+  void addPedalData() async {
+    final CollectionReference pedals = FirebaseFirestore.instance
+        .collection('users')
+        .doc('So6Y0xYBudc4jDDEjGNM')
+        .collection('pedals');
+
+    var data = state.pedalData?.toJson();
+
+    var pefalDoc = await pedals.add(data);
   }
 
   void setOverlay(bool showOverlay) {

@@ -20,8 +20,10 @@ class PedalUI extends StatelessWidget {
 
   Future<bool> _navigateBack(BuildContext context) async {
     Navigator.of(context).pop(true);
-    _pedalUIBloc.updatePedalData();
-    onLeave();
+    onLeave(
+      _pedalUIBloc.updatePedalData,
+      _pedalUIBloc.addPedalData,
+    );
     return false;
   }
 
@@ -84,6 +86,7 @@ class PedalUI extends StatelessWidget {
                         child: Column(
                           children: [
                             Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   padding: const EdgeInsets.only(
@@ -101,6 +104,13 @@ class PedalUI extends StatelessWidget {
                                     ),
                                   ),
                                 ),
+                                PopupMenuButton(
+                                  itemBuilder: (context) => [
+                                    const PopupMenuItem(
+                                      child: Text('Rename'),
+                                    ),
+                                  ],
+                                )
                               ],
                             ),
                             SizedBox(

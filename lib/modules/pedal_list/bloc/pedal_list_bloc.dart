@@ -19,13 +19,22 @@ class PedalListBloc {
         .collection('users')
         .doc('So6Y0xYBudc4jDDEjGNM')
         .collection('pedals');
+
     // Get docs from collection reference
     QuerySnapshot querySnapshot = await pedals.get();
 
+    var list = [];
+    for (var doc in querySnapshot.docs) {
+      dynamic docData = doc.data();
+      var listItem = {
+        "id": doc.id,
+        ...docData,
+      };
+      list.add(listItem);
+    }
+
     // Get data from docs and convert map to List
-    var pedalListState = PedalListState(
-      listData: querySnapshot.docs.map((doc) => doc.data()).toList(),
-    );
+    var pedalListState = PedalListState(listData: list);
     state = pedalListState;
     _subjectPedalList.add(pedalListState);
   }

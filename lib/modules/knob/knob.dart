@@ -17,16 +17,14 @@ class Knob extends StatelessWidget {
     ),
   );
   final String label;
-  final KnobOptions options;
   final double radius;
-  final KnobData initialKnobData;
+  final KnobData knobData;
 
   Knob({
     Key? key,
     required this.label,
-    required this.options,
     required this.radius,
-    required this.initialKnobData,
+    required this.knobData,
   }) : super(key: key);
 
   Position getPosition() {
@@ -85,7 +83,7 @@ class Knob extends StatelessWidget {
   Widget build(BuildContext context) {
     bool shouldRepaint = false;
     double distance = 0;
-    _knobBloc = KnobBloc(initKnobData: initialKnobData);
+    _knobBloc = KnobBloc(initKnobData: knobData);
     return StreamBuilder(
       key: key,
       stream: _knobBloc.state.stream,

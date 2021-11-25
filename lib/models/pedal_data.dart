@@ -4,6 +4,7 @@ import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/knob/knob.dart';
 
 class PedalData {
+  String? id;
   Position position = Position(x: 0, y: 0);
   Dimensions dimensions = Dimensions(width: 300, height: 300);
   List<Knob> knobs = [];
@@ -26,8 +27,8 @@ class PedalData {
         'label': knob.label,
         'radius': knob.radius,
         'position': {
-          'x': knob.initialKnobData.position?.x,
-          'y': knob.initialKnobData.position?.y,
+          'x': knob.knobData.position?.x,
+          'y': knob.knobData.position?.y,
         },
       });
     }
@@ -43,8 +44,23 @@ class PedalData {
     required this.isEditable,
   });
 
+  PedalData.createDefault() {
+    dimensions = Dimensions(width: 200, height: 300);
+    knobs = [
+      Knob(
+        label: "Gain",
+        radius: 20,
+        knobData: KnobData(
+          options: KnobOptions(),
+        ),
+      )
+    ];
+    position = Position(x: 0, y: 0);
+    name = "New Pedal";
+  }
+
   PedalData.createFromSnapshot(dynamic snapshotData, KnobOptions knobOptions) {
-    var data = snapshotData as Map<String, dynamic>;
+    var data = snapshotData as Map<dynamic, dynamic>;
     var dataDimensions = data['dimensions'];
     num width = dataDimensions['width'];
     num height = dataDimensions['height'];
@@ -67,12 +83,11 @@ class PedalData {
           y: y.toDouble(),
         );
         Knob newKnob = Knob(
-          initialKnobData: KnobData(
+          knobData: KnobData(
             position: initKnobPosition,
             options: KnobOptions(),
           ),
           label: knobLabel,
-          options: knobOptions,
           radius: knobRadius.toDouble(),
         );
         knobs.add(newKnob);
@@ -81,6 +96,7 @@ class PedalData {
       return knobs;
     }
 
+    id = data['id'];
     name = data['name'];
     dimensions = initDimensions;
     knobs = getKnobs();
