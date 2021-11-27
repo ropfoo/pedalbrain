@@ -35,35 +35,38 @@ class PedalList extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          margin: const EdgeInsets.symmetric(vertical: 30, horizontal: 20),
-          alignment: Alignment.topLeft,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                'Pedals',
-                style: Theme.of(context).textTheme.headline1,
-              ),
-              AddButton(
-                onPressed: () => Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (_) => PedalUIScreen(
-                      pedalData: PedalData.createDefault(),
-                      onLeave: (upade, add) {
-                        _pedalListBloc.getData();
-                        add();
-                      },
+        Padding(
+          padding: const EdgeInsets.only(top: 60),
+          child: Container(
+            margin: const EdgeInsets.all(20),
+            alignment: Alignment.topLeft,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Pedals',
+                  style: Theme.of(context).textTheme.headline1,
+                ),
+                AddButton(
+                  onPressed: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => PedalUIScreen(
+                        pedalData: PedalData.createDefault(),
+                        onLeave: (upade, add) {
+                          _pedalListBloc.getData();
+                          add();
+                        },
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         SizedBox(
-          height: 550,
+          height: 620,
           child: StreamBuilder(
             stream: _pedalListBloc.stream,
             builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

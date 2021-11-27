@@ -38,9 +38,6 @@ class App extends StatelessWidget {
       ),
       home: Scaffold(
         backgroundColor: Colors.black87,
-        appBar: AppBar(
-          backgroundColor: const Color(0xFF05001A),
-        ),
         body: FutureBuilder(
           future: _initialization,
           builder: (context, snapshot) {

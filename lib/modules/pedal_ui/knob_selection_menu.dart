@@ -74,6 +74,19 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
                       ],
                     ),
                   ),
+                  Slider(
+                    value: widget.selection!.radius,
+                    min: 10,
+                    max: 30,
+                    divisions: 4,
+                    label: widget.selection!.radius.round().toString(),
+                    onChanged: (double value) {
+                      setState(() {
+                        // _currentSliderValue = value;
+                        // lel = true;
+                      });
+                    },
+                  )
                 ],
               ),
             )

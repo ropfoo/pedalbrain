@@ -6,11 +6,13 @@ import 'package:pedalbrain/modules/pedal/pedal.dart';
 import 'package:pedalbrain/modules/pedal_ui/bloc/pedal_ui_bloc.dart';
 import 'package:pedalbrain/modules/pedal_ui/knob_selection_menu.dart';
 import 'package:pedalbrain/modules/pedal_ui/knob_selection.dart';
+import 'package:pedalbrain/widgets/name_change_modal.dart';
 
 class PedalUI extends StatelessWidget {
   final PedalData initPedalData;
   late PedalUIBloc _pedalUIBloc;
   final Function onLeave;
+  final NameChangeModal nameChangeModal = NameChangeModal();
 
   PedalUI({
     Key? key,
@@ -43,29 +45,18 @@ class PedalUI extends StatelessWidget {
     return knobOptions;
   }
 
-  void _onSelectedMain(dynamic choice, BuildContext context) {
-    showModalBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          height: 300,
-          color: Colors.amber,
-          child: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                const Text('Modal BottomSheet'),
-                ElevatedButton(
-                  child: const Text('Close BottomSheet'),
-                  onPressed: () => Navigator.pop(context),
-                )
-              ],
-            ),
-          ),
-        );
-      },
-    );
+  void _onSelectedMain(
+      dynamic choice, BuildContext context, PedalUIBloc pedalUIBloc) {
+    switch (choice) {
+      case "rename":
+        return nameChangeModal.show(
+            context: context,
+            initialName: pedalUIBloc.state.pedalData!.name,
+            onChanged: (value) => pedalUIBloc.renamePedal(value));
+      case "addKnob":
+        return _pedalUIBloc.addKnob();
+      default:
+    }
   }
 
   @override
@@ -74,7 +65,7 @@ class PedalUI extends StatelessWidget {
     initPedalData.position = Position(x: 50, y: 50);
     return WillPopScope(
       onWillPop: () => _navigateBack(context),
-      child: StreamBuilder<Object>(
+      child: StreamBuilder(
         stream: _pedalUIBloc.stream,
         builder: (context, snapshot) {
           if (_pedalUIBloc.state.pedalData != null) {
@@ -84,16 +75,13 @@ class PedalUI extends StatelessWidget {
                   width: 500,
                   height: 500,
                   color: const Color(0xFF040013),
-                  child: Hero(
-                    tag: 1,
-                    child: Stack(
-                      children: [
-                        Pedal(
-                          initPedalData: _pedalUIBloc.state.pedalData!,
-                          scale: 1,
-                        ),
-                      ],
-                    ),
+                  child: Stack(
+                    children: [
+                      Pedal(
+                        initPedalData: _pedalUIBloc.state.pedalData!,
+                        scale: 1,
+                      ),
+                    ],
                   ),
                 ),
                 Container(
@@ -130,8 +118,8 @@ class PedalUI extends StatelessWidget {
                                   ),
                                 ),
                                 PopupMenuButton(
-                                  onSelected: (choice) =>
-                                      _onSelectedMain(choice, context),
+                                  onSelected: (choice) => _onSelectedMain(
+                                      choice, context, _pedalUIBloc),
                                   color: const Color(0xff615EFF),
                                   itemBuilder: (ctx) => [
                                     const PopupMenuItem(
@@ -145,6 +133,13 @@ class PedalUI extends StatelessWidget {
                                       value: "color",
                                       child: Text(
                                         'Color',
+                                        style: TextStyle(fontSize: 18),
+                                      ),
+                                    ),
+                                    const PopupMenuItem(
+                                      value: "addKnob",
+                                      child: Text(
+                                        'Add Knob',
                                         style: TextStyle(fontSize: 18),
                                       ),
                                     ),

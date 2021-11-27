@@ -5,6 +5,7 @@ import 'package:pedalbrain/modules/knob/knob.dart';
 class KnobSelection extends StatelessWidget {
   final Knob knob;
   final Function onPress;
+
   KnobSelection({
     Key? key,
     required this.knob,
@@ -13,7 +14,7 @@ class KnobSelection extends StatelessWidget {
 
   final Widget knobSVG = SvgPicture.asset(
     'assets/icons/knob.svg',
-    semanticsLabel: 'Acme Logo',
+    semanticsLabel: 'Knob',
     color: const Color(0xFF2B2F79),
     width: 35,
     height: 35,

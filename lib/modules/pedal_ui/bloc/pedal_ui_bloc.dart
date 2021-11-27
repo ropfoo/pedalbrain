@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pedalbrain/models/knob_data.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
+import 'package:pedalbrain/modules/knob/knob.dart';
 import 'package:pedalbrain/modules/pedal_ui/bloc/pedal_ui_state.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -70,6 +71,25 @@ class PedalUIBloc {
 
   void selectOption(selection) {
     state.activeSelection = selection;
+    _subjectPedalUI.add(PedalUIState());
+  }
+
+  void renamePedal(String newName) {
+    state.pedalData!.name = newName;
+    _subjectPedalUI.add(PedalUIState());
+  }
+
+  void addKnob() {
+    state.pedalData!.knobs = [
+      ...state.pedalData!.knobs,
+      Knob(
+        label: "test",
+        radius: 25,
+        knobData: KnobData(
+          options: KnobOptions(),
+        ),
+      ),
+    ];
     _subjectPedalUI.add(PedalUIState());
   }
 
