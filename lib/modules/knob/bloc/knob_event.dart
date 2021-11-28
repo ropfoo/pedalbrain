@@ -9,6 +9,7 @@ enum KnobAction {
   updatePos,
   updateOptions,
   setDimensions,
+  setLabel,
 }
 
 class KnobPayload {
@@ -16,11 +17,13 @@ class KnobPayload {
   Position? newPos;
   Dimensions? newDimensions;
   KnobOptions? newOptions;
+  String? newLabel;
   KnobPayload({
     this.rotation,
     this.newPos,
     this.newDimensions,
     this.newOptions,
+    this.newLabel,
   });
 }
 

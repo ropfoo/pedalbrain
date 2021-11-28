@@ -6,12 +6,16 @@ import 'dimensions.dart';
 
 class KnobData {
   double rotation = pi;
-  String label = 'unnamed';
+  String label;
   Position? position;
   Dimensions? dimensions;
   KnobOptions options;
 
-  KnobData({this.position, required this.options});
+  KnobData({
+    required this.label,
+    this.position,
+    required this.options,
+  });
 }
 
 class KnobOptions {

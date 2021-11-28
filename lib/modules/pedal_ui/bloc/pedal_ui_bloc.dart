@@ -83,8 +83,8 @@ class PedalUIBloc {
     state.pedalData!.knobs = [
       ...state.pedalData!.knobs,
       Knob(
-        label: "test",
         knobData: KnobData(
+          label: "Gain",
           options: KnobOptions(),
         ),
       ),

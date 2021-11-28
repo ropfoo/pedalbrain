@@ -36,6 +36,10 @@ class KnobBloc {
               Dimensions(width: 100, height: 100);
           break;
 
+        case KnobAction.setLabel:
+          state.knobData.label = event.payload?.newLabel ?? "no name";
+          break;
+
         default:
           state.knobData.rotation = pi;
       }

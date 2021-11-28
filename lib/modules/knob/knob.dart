@@ -13,15 +13,14 @@ import 'knob_painter.dart';
 class Knob extends StatelessWidget {
   KnobBloc _knobBloc = KnobBloc(
     initKnobData: KnobData(
+      label: "unnamed",
       options: KnobOptions(),
     ),
   );
-  final String label;
   final KnobData knobData;
 
   Knob({
     Key? key,
-    required this.label,
     required this.knobData,
   }) : super(key: key);
 
@@ -50,6 +49,17 @@ class Knob extends StatelessWidget {
             showLabel: _knobBloc.state.knobData.options.showLabel,
             radius: newRadius,
           ),
+        ),
+      ),
+    );
+  }
+
+  void setLabel(String newLabel) {
+    _knobBloc.event.sink.add(
+      KnobEventType(
+        action: KnobAction.setLabel,
+        payload: KnobPayload(
+          newLabel: newLabel,
         ),
       ),
     );
@@ -227,7 +237,7 @@ class Knob extends StatelessWidget {
                   if (_knobBloc.state.knobData.options.showLabel)
                     KnobLabel(
                       key: key,
-                      text: label,
+                      text: knobData.label,
                     )
                 ],
               ),

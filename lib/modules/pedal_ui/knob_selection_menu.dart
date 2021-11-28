@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pedalbrain/modules/knob/knob.dart';
 import 'package:pedalbrain/widgets/arrow_button.dart';
+import 'package:pedalbrain/widgets/name_change_modal.dart';
 
 class KnobSelectionMenu extends StatefulWidget {
   final bool isVisible;
@@ -33,6 +34,20 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
     ),
   );
 
+  NameChangeModal nameChangeModal = NameChangeModal();
+
+  void _onSelected(dynamic choice, BuildContext context) {
+    switch (choice) {
+      case "rename":
+        return nameChangeModal.show(
+            context: context,
+            initialName: widget.selection!.knobData.label,
+            onChanged: (value) => widget.selection!.setLabel(value));
+
+      default:
+    }
+  }
+
   @override
   void dispose() {
     _controller.dispose();
@@ -57,20 +72,51 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
                   Container(
                     margin: const EdgeInsets.only(top: 20, left: 15, right: 15),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        ArrowButton(
-                          onPressed: () {
-                            _controller.reverse();
-                            widget.selection!.toggleEditMode();
-                          },
+                        Row(
+                          children: [
+                            ArrowButton(
+                              onPressed: () {
+                                _controller.reverse();
+                                widget.selection!.toggleEditMode();
+                              },
+                            ),
+                            Container(
+                              margin: const EdgeInsets.only(left: 25),
+                              child: Text(
+                                widget.selection!.knobData.label,
+                                style: Theme.of(context).textTheme.headline4,
+                              ),
+                            ),
+                          ],
                         ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 25),
-                          child: Text(
-                            widget.selection!.label,
-                            style: Theme.of(context).textTheme.headline4,
-                          ),
-                        )
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            PopupMenuButton(
+                              onSelected: (choice) =>
+                                  _onSelected(choice, context),
+                              color: const Color(0xff615EFF),
+                              itemBuilder: (ctx) => [
+                                const PopupMenuItem(
+                                  value: "rename",
+                                  child: Text(
+                                    'Rename',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ),
+                                const PopupMenuItem(
+                                  value: "color",
+                                  child: Text(
+                                    'Color',
+                                    style: TextStyle(fontSize: 18),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -84,10 +130,6 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
                         .toString(),
                     onChanged: (double value) {
                       widget.selection!.setRadius(value);
-                      setState(() {
-                        // _currentSliderValue = value;
-                        // lel = true;
-                      });
                     },
                   )
                 ],

@@ -50,7 +50,7 @@ class KnobSelection extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.only(left: 20),
                   child: Text(
-                    knob.label,
+                    knob.knobData.label,
                     style: const TextStyle(
                       color: Colors.white,
                       fontSize: 20,

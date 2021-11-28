@@ -24,7 +24,7 @@ class PedalData {
     List<Map<String, dynamic>> knobsData = [];
     for (var knob in knobs) {
       knobsData.add({
-        'label': knob.label,
+        'label': knob.knobData.label,
         'radius': knob.knobData.options.radius,
         'position': {
           'x': knob.knobData.position?.x,
@@ -48,8 +48,8 @@ class PedalData {
     dimensions = Dimensions(width: 200, height: 300);
     knobs = [
       Knob(
-        label: "Gain",
         knobData: KnobData(
+          label: "unnamed",
           options: KnobOptions(),
         ),
       )
@@ -83,10 +83,10 @@ class PedalData {
         );
         Knob newKnob = Knob(
           knobData: KnobData(
+            label: knobLabel,
             position: initKnobPosition,
             options: KnobOptions(radius: knobRadius.toDouble()),
           ),
-          label: knobLabel,
         );
         knobs.add(newKnob);
       }

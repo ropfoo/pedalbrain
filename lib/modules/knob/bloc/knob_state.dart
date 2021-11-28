@@ -4,6 +4,7 @@ import 'package:pedalbrain/models/knob_data.dart';
 
 class KnobState {
   KnobData knobData = KnobData(
+    label: "lel",
     options: KnobOptions(),
   );
 
