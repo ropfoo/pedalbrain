@@ -84,7 +84,6 @@ class PedalUIBloc {
       ...state.pedalData!.knobs,
       Knob(
         label: "test",
-        radius: 25,
         knobData: KnobData(
           options: KnobOptions(),
         ),

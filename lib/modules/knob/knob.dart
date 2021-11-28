@@ -17,13 +17,11 @@ class Knob extends StatelessWidget {
     ),
   );
   final String label;
-  final double radius;
   final KnobData knobData;
 
   Knob({
     Key? key,
     required this.label,
-    required this.radius,
     required this.knobData,
   }) : super(key: key);
 
@@ -37,6 +35,21 @@ class Knob extends StatelessWidget {
         action: KnobAction.updatePos,
         payload: KnobPayload(
           newPos: newPosition,
+        ),
+      ),
+    );
+  }
+
+  void setRadius(double newRadius) {
+    _knobBloc.event.sink.add(
+      KnobEventType(
+        action: KnobAction.updateOptions,
+        payload: KnobPayload(
+          newOptions: KnobOptions(
+            isEditable: _knobBloc.state.knobData.options.isEditable,
+            showLabel: _knobBloc.state.knobData.options.showLabel,
+            radius: newRadius,
+          ),
         ),
       ),
     );
@@ -59,7 +72,9 @@ class Knob extends StatelessWidget {
         action: KnobAction.updateOptions,
         payload: KnobPayload(
           newOptions: KnobOptions(
-              isEditable: !_knobBloc.state.knobData.options.isEditable),
+            isEditable: !_knobBloc.state.knobData.options.isEditable,
+            radius: _knobBloc.state.knobData.options.radius,
+          ),
         ),
       ),
     );
@@ -153,7 +168,7 @@ class Knob extends StatelessWidget {
                       if (_knobBloc.state.knobData.options.isEditable) {
                         _knobBloc.handlePan(
                           dragUpdateDetails,
-                          radius,
+                          _knobBloc.state.knobData.options.radius,
                         );
                         shouldRepaint =
                             dragUpdateDetails.delta.distance != distance;
@@ -165,13 +180,15 @@ class Knob extends StatelessWidget {
                     },
                     child: Center(
                       child: Container(
-                        width: radius * 2,
-                        height: radius * 2,
+                        width: _knobBloc.state.knobData.options.radius * 2,
+                        height: _knobBloc.state.knobData.options.radius * 2,
                         decoration: const BoxDecoration(
                           shape: BoxShape.circle,
                           color: Colors.red,
                         ),
-                        constraints: BoxConstraints(maxWidth: radius * 2),
+                        constraints: BoxConstraints(
+                            maxWidth:
+                                _knobBloc.state.knobData.options.radius * 2),
                         child: Center(
                           child: Stack(
                             alignment: Alignment.center,
@@ -180,7 +197,9 @@ class Knob extends StatelessWidget {
                                 child: RepaintBoundary(
                                   child: CustomPaint(
                                     painter: CirclePainter(
-                                        radius: radius + .5,
+                                        radius: _knobBloc
+                                                .state.knobData.options.radius +
+                                            .5,
                                         offset: const Offset(0, 5),
                                         color: Colors.black54),
                                   ),
@@ -193,7 +212,8 @@ class Knob extends StatelessWidget {
                                       isEditable: shouldRepaint,
                                       rotation:
                                           _knobBloc.state.knobData.rotation,
-                                      radius: radius,
+                                      radius: _knobBloc
+                                          .state.knobData.options.radius,
                                     ),
                                   ),
                                 ),

@@ -17,9 +17,11 @@ class KnobData {
 class KnobOptions {
   final bool isEditable;
   final bool showLabel;
+  final double radius;
 
   KnobOptions({
     this.showLabel = true,
     this.isEditable = false,
+    this.radius = 25,
   });
 }

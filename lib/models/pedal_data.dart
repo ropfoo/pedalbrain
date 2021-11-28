@@ -25,7 +25,7 @@ class PedalData {
     for (var knob in knobs) {
       knobsData.add({
         'label': knob.label,
-        'radius': knob.radius,
+        'radius': knob.knobData.options.radius,
         'position': {
           'x': knob.knobData.position?.x,
           'y': knob.knobData.position?.y,
@@ -49,7 +49,6 @@ class PedalData {
     knobs = [
       Knob(
         label: "Gain",
-        radius: 20,
         knobData: KnobData(
           options: KnobOptions(),
         ),
@@ -85,10 +84,9 @@ class PedalData {
         Knob newKnob = Knob(
           knobData: KnobData(
             position: initKnobPosition,
-            options: KnobOptions(),
+            options: KnobOptions(radius: knobRadius.toDouble()),
           ),
           label: knobLabel,
-          radius: knobRadius.toDouble(),
         );
         knobs.add(newKnob);
       }
