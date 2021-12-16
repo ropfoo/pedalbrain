@@ -34,6 +34,8 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
     ),
   );
 
+  double _currentSliderValue = 10;
+
   NameChangeModal nameChangeModal = NameChangeModal();
 
   void _onSelected(dynamic choice, BuildContext context) {
@@ -58,6 +60,10 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
   Widget build(BuildContext context) {
     if (widget.isVisible) {
       _controller.forward();
+    }
+
+    if (widget.selection != null) {
+      _currentSliderValue = widget.selection!.knobData.options.radius;
     }
 
     return SlideTransition(
@@ -121,7 +127,7 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
                     ),
                   ),
                   Slider(
-                    value: widget.selection!.knobData.options.radius,
+                    value: _currentSliderValue,
                     min: 10,
                     max: 30,
                     divisions: 4,
@@ -130,6 +136,9 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
                         .toString(),
                     onChanged: (double value) {
                       widget.selection!.setRadius(value);
+                      setState(() {
+                        _currentSliderValue = value;
+                      });
                     },
                   )
                 ],
