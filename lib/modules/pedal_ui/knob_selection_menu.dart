@@ -71,7 +71,7 @@ class _KnobSelectionMenuState extends State<KnobSelectionMenu>
       child: widget.selection != null
           ? Container(
               width: 500,
-              height: 290,
+              height: MediaQuery.of(context).size.height * .3,
               color: const Color(0xff00042C),
               child: Column(
                 children: [

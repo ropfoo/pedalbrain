@@ -16,8 +16,8 @@ class KnobSelection extends StatelessWidget {
     'assets/icons/knob.svg',
     semanticsLabel: 'Knob',
     color: const Color(0xFF2B2F79),
-    width: 35,
-    height: 35,
+    width: 30,
+    height: 30,
   );
 
   @override
@@ -34,7 +34,7 @@ class KnobSelection extends StatelessWidget {
           },
           child: Container(
             padding: const EdgeInsets.symmetric(
-              vertical: 18,
+              vertical: 10,
               horizontal: 25,
             ),
             decoration: const BoxDecoration(

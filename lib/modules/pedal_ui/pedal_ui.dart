@@ -62,7 +62,7 @@ class PedalUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _pedalUIBloc = PedalUIBloc(initPedalData);
-    initPedalData.position = Position(x: 50, y: 50);
+    initPedalData.position = Position(x: 25, y: 0);
     return WillPopScope(
       onWillPop: () => _navigateBack(context),
       child: StreamBuilder(
@@ -71,17 +71,21 @@ class PedalUI extends StatelessWidget {
           if (_pedalUIBloc.state.pedalData != null) {
             return Column(
               children: [
-                Container(
-                  width: 500,
-                  height: 500,
-                  color: const Color(0xFF040013),
-                  child: Stack(
-                    children: [
-                      Pedal(
-                        initPedalData: _pedalUIBloc.state.pedalData!,
-                        scale: 1,
-                      ),
-                    ],
+                InteractiveViewer(
+                  minScale: 0.5,
+                  maxScale: 2,
+                  child: Container(
+                    width: 500,
+                    height: MediaQuery.of(context).size.height * .55,
+                    color: const Color(0xFF040013),
+                    child: Stack(
+                      children: [
+                        Pedal(
+                          initPedalData: _pedalUIBloc.state.pedalData!,
+                          scale: .65,
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Container(
@@ -148,7 +152,7 @@ class PedalUI extends StatelessWidget {
                               ],
                             ),
                             SizedBox(
-                              height: 200,
+                              height: MediaQuery.of(context).size.height * .2,
                               child: ListView(
                                 children: getKnobOptions(
                                     _pedalUIBloc.state.pedalData!.knobs),

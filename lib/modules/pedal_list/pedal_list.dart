@@ -33,54 +33,58 @@ class PedalList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 60),
-          child: Container(
-            margin: const EdgeInsets.all(20),
-            alignment: Alignment.topLeft,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Pedals',
-                  style: Theme.of(context).textTheme.headline1,
-                ),
-                AddButton(
-                  onPressed: () => Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => PedalUIScreen(
-                        pedalData: PedalData.createDefault(),
-                        onLeave: (upade, add) {
-                          _pedalListBloc.getData();
-                          add();
-                        },
+    return StreamBuilder(
+      stream: _pedalListBloc.stream,
+      builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+        if (_pedalListBloc.state.listData.isNotEmpty) {
+          return CustomScrollView(
+            slivers: [
+              SliverAppBar(
+                backgroundColor: const Color(0xFF040013),
+                pinned: true,
+                expandedHeight: 180.0,
+                collapsedHeight: 100.0,
+                flexibleSpace: FlexibleSpaceBar(
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Pedals',
+                        style: Theme.of(context).textTheme.headline1,
                       ),
-                    ),
+                      AddButton(
+                        onPressed: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => PedalUIScreen(
+                              pedalData: PedalData.createDefault(),
+                              onLeave: (upade, add) {
+                                _pedalListBloc.getData();
+                                add();
+                              },
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
-            ),
-          ),
-        ),
-        SizedBox(
-          height: 620,
-          child: StreamBuilder(
-            stream: _pedalListBloc.stream,
-            builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-              if (_pedalListBloc.state.listData.isNotEmpty) {
-                return ListView(
-                  children: getPedalListItems(_pedalListBloc.state.listData),
-                );
-              } else {
-                return const Text('no pedal data');
-              }
-            },
-          ),
-        )
-      ],
+              ),
+              SliverList(
+                delegate: SliverChildBuilderDelegate(
+                  (BuildContext context, int index) {
+                    return getPedalListItems(
+                        _pedalListBloc.state.listData)[index];
+                  },
+                  childCount: _pedalListBloc.state.listData.length,
+                ),
+              ),
+            ],
+          );
+        } else {
+          return const Text('no pedal data');
+        }
+      },
     );
   }
 }
