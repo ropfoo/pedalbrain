@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pedalbrain/models/app_color.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 
 import 'package:pedalbrain/modules/pedal_ui/pedal_ui.dart';
@@ -16,7 +17,7 @@ class PedalUIScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF040013),
+        backgroundColor: AppColor.background,
       ),
       backgroundColor: Colors.black87,
       body: PedalUI(

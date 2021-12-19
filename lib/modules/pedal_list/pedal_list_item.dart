@@ -16,9 +16,9 @@ class PedalListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    pedalData.position = Position(x: -50, y: -100);
+    pedalData.position = Position(x: 0, y: -100);
     return Container(
-      height: 145,
+      height: 160,
       alignment: Alignment.topLeft,
       margin: const EdgeInsets.only(bottom: 20),
       child: TextButton(
@@ -38,30 +38,13 @@ class PedalListItem extends StatelessWidget {
           Positioned(
             height: 120,
             width: 500,
-            child: Container(
-              padding: const EdgeInsets.only(left: 20),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment(1, 0.0),
-                  colors: <Color>[Colors.transparent, Colors.amber],
-                  tileMode: TileMode.repeated,
-                ),
-              ),
-              alignment: Alignment.centerLeft,
-              child: Text(
-                pedalData.name,
-                style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 21,
-                  color: Colors.white,
-                ),
-              ),
+            child: PedalListItemGradient(
+              pedalData: pedalData,
             ),
           ),
           Positioned(
-            width: 160,
-            height: 145,
+            width: pedalData.dimensions.width,
+            height: pedalData.dimensions.height,
             right: 0,
             child: Stack(
               children: [
@@ -73,6 +56,39 @@ class PedalListItem extends StatelessWidget {
             ),
           ),
         ]),
+      ),
+    );
+  }
+}
+
+class PedalListItemGradient extends StatelessWidget {
+  final PedalData pedalData;
+
+  PedalListItemGradient({required this.pedalData});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.only(left: 20),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: const Alignment(1, 0.0),
+          colors: <Color>[
+            Colors.transparent,
+            pedalData.color.tertiary,
+          ],
+          tileMode: TileMode.repeated,
+        ),
+      ),
+      alignment: Alignment.centerLeft,
+      child: Text(
+        pedalData.name,
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 21,
+          color: Colors.white,
+        ),
       ),
     );
   }

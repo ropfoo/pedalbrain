@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pedalbrain/models/app_color.dart';
 import 'package:pedalbrain/models/knob_data.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/modules/pedal_list/bloc/pedal_list_bloc.dart';
@@ -40,33 +41,36 @@ class PedalList extends StatelessWidget {
           return CustomScrollView(
             slivers: [
               SliverAppBar(
-                backgroundColor: const Color(0xFF040013),
+                backgroundColor: AppColor.background,
                 pinned: true,
                 expandedHeight: 180.0,
                 collapsedHeight: 100.0,
                 flexibleSpace: FlexibleSpaceBar(
-                  title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        'Pedals',
-                        style: Theme.of(context).textTheme.headline1,
-                      ),
-                      AddButton(
-                        onPressed: () => Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => PedalUIScreen(
-                              pedalData: PedalData.createDefault(),
-                              onLeave: (upade, add) {
-                                _pedalListBloc.getData();
-                                add();
-                              },
+                  title: Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Pedals',
+                          style: Theme.of(context).textTheme.headline1,
+                        ),
+                        AddButton(
+                          onPressed: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => PedalUIScreen(
+                                pedalData: PedalData.createDefault(),
+                                onLeave: (upade, add) {
+                                  _pedalListBloc.getData();
+                                  add();
+                                },
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
                 ),
               ),

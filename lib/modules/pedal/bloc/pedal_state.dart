@@ -11,6 +11,7 @@ class PedalState {
     position: Position(x: 0, y: 0),
     name: 'Pedal',
     isEditable: false,
+    color: "orange",
   );
 
   final _stateController = StreamController<PedalData>.broadcast();

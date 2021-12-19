@@ -5,8 +5,8 @@ class AddButton extends StatelessWidget {
   final Widget plusSVG = SvgPicture.asset(
     'assets/icons/plus.svg',
     semanticsLabel: 'plus',
-    width: 18,
-    height: 18,
+    width: 20,
+    height: 20,
   );
 
   final Function onPressed;
@@ -21,14 +21,6 @@ class AddButton extends StatelessWidget {
     return TextButton(
       onPressed: () => onPressed(),
       child: Container(
-        padding: const EdgeInsets.all(5),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(
-            width: 3,
-            color: const Color(0xff2B2F79),
-          ),
-        ),
         child: plusSVG,
       ),
     );

@@ -1,3 +1,4 @@
+import 'package:pedalbrain/models/color_group.dart';
 import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/knob_data.dart';
 import 'package:pedalbrain/models/position.dart';
@@ -9,6 +10,7 @@ class PedalData {
   Dimensions dimensions = Dimensions(width: 300, height: 300);
   List<Knob> knobs = [];
   String name = 'Pedal';
+  late ColorGroupType color;
   bool isEditable = false;
 
   Map<String, dynamic> toJson() => {
@@ -36,13 +38,15 @@ class PedalData {
     return knobsData;
   }
 
-  PedalData({
-    required this.dimensions,
-    required this.knobs,
-    required this.position,
-    required this.name,
-    required this.isEditable,
-  });
+  PedalData(
+      {required this.dimensions,
+      required this.knobs,
+      required this.position,
+      required this.name,
+      required this.isEditable,
+      required String color}) {
+    this.color = ColorGroup.getColor(color);
+  }
 
   PedalData.createDefault() {
     dimensions = Dimensions(width: 200, height: 300);
@@ -67,6 +71,7 @@ class PedalData {
       width: width.toDouble(),
       height: height.toDouble(),
     );
+    var color = data["color"];
 
     List<Knob> getKnobs() {
       List<Knob> knobs = [];
@@ -94,6 +99,7 @@ class PedalData {
       return knobs;
     }
 
+    this.color = ColorGroup.getColor(color ?? "orange");
     id = data['id'];
     name = data['name'];
     dimensions = initDimensions;
