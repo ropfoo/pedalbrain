@@ -17,12 +17,22 @@ class ColorGroup {
     tertiary: 0xFF38FC9E,
   );
 
+  //White
+  static ColorGroupType white = ColorGroupType(
+    name: "white",
+    primary: 0xFFFFFFF9,
+    secondary: 0xFFEDEDED,
+    tertiary: 0xFFFFFFF9,
+  );
+
   static ColorGroupType getColor(String name) {
     switch (name) {
       case "orange":
         return orange;
       case "green":
         return green;
+      case "white":
+        return white;
       default:
         return orange;
     }

@@ -18,7 +18,7 @@ class PedalListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     pedalData.position = Position(x: 0, y: -100);
     return Container(
-      height: 160,
+      height: 145,
       alignment: Alignment.topLeft,
       margin: const EdgeInsets.only(bottom: 20),
       child: TextButton(

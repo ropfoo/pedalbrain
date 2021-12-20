@@ -31,7 +31,7 @@ class ColorPickerBloc {
 }
 
 class ColorFieldCreator {
-  static final List<String> colors = ["orange", "green"];
+  static final List<String> colors = ["orange", "green", "white"];
   static List<ColorFieldData> create(String activeColor) {
     List<ColorFieldData> colorFields = [];
     for (var color in colors) {

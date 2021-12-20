@@ -25,7 +25,7 @@ class ColorPicker extends StatelessWidget {
                 crossAxisSpacing: 10,
                 mainAxisSpacing: 10,
               ),
-              itemCount: 2,
+              itemCount: _colorPickerBloc.state.colorFields.length,
               itemBuilder: (context, index) {
                 return ColorField(
                   colorFieldData: _colorPickerBloc.state.colorFields[index],
