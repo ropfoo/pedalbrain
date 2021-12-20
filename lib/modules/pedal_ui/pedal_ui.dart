@@ -11,7 +11,7 @@ import 'package:pedalbrain/widgets/name_change_modal.dart';
 
 class PedalUI extends StatelessWidget {
   final PedalData initPedalData;
-  late PedalUIBloc _pedalUIBloc;
+  late final PedalUIBloc _pedalUIBloc;
   final Function onLeave;
   final NameChangeModal nameChangeModal = NameChangeModal();
   final ColorPickerModal colorPickerModal = ColorPickerModal();
@@ -56,7 +56,10 @@ class PedalUI extends StatelessWidget {
             initialName: pedalUIBloc.state.pedalData!.name,
             onChanged: (value) => pedalUIBloc.renamePedal(value));
       case "color":
-        return colorPickerModal.show(context: context, onChanged: () {});
+        return colorPickerModal.show(
+            context: context,
+            activeColor: pedalUIBloc.state.pedalData!.color.name,
+            update: (value) => pedalUIBloc.setPedalColor(value));
       case "addKnob":
         return _pedalUIBloc.addKnob();
       default:

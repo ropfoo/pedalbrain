@@ -3,9 +3,16 @@ import 'package:pedalbrain/modules/colorpicker/bloc/color_picker_bloc.dart';
 import 'package:pedalbrain/modules/colorpicker/color_field.dart';
 
 class ColorPicker extends StatelessWidget {
-  final ColorPickerBloc _colorPickerBloc = ColorPickerBloc();
+  late final ColorPickerBloc _colorPickerBloc;
+  final Function updatePedalColor;
+  final String activeColor;
 
-  ColorPicker({Key? key}) : super(key: key);
+  ColorPicker(
+      {Key? key, required this.updatePedalColor, required this.activeColor})
+      : super(key: key) {
+    _colorPickerBloc = ColorPickerBloc(activeColor);
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder(
@@ -22,8 +29,12 @@ class ColorPicker extends StatelessWidget {
               itemBuilder: (context, index) {
                 return ColorField(
                   colorFieldData: _colorPickerBloc.state.colorFields[index],
-                  onPressed: () => _colorPickerBloc.selectColor(
-                      _colorPickerBloc.state.colorFields[index].name),
+                  onPressed: () {
+                    _colorPickerBloc.selectColor(
+                        _colorPickerBloc.state.colorFields[index].name);
+                    updatePedalColor(
+                        _colorPickerBloc.state.colorFields[index].name);
+                  },
                 );
               },
             );

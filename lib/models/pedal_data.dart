@@ -15,6 +15,7 @@ class PedalData {
 
   Map<String, dynamic> toJson() => {
         'name': name,
+        "color": color.name,
         'dimensions': {
           'width': dimensions.width,
           'height': dimensions.height,

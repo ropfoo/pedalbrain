@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:pedalbrain/models/color_group.dart';
 import 'package:pedalbrain/models/knob_data.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/modules/knob/knob.dart';
@@ -50,6 +51,8 @@ class PedalUIBloc {
 
     var data = state.pedalData?.toJson();
 
+    print(data);
+
     if (data != null) pedalDataDoc.update(data);
   }
 
@@ -76,6 +79,11 @@ class PedalUIBloc {
 
   void renamePedal(String newName) {
     state.pedalData!.name = newName;
+    _subjectPedalUI.add(PedalUIState());
+  }
+
+  void setPedalColor(String colorName) {
+    state.pedalData!.color = ColorGroup.getColor(colorName);
     _subjectPedalUI.add(PedalUIState());
   }
 
