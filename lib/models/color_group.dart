@@ -9,6 +9,7 @@ class ColorGroup {
     tertiary: 0xFFF96800,
   );
 
+  //Green
   static ColorGroupType green = ColorGroupType(
     name: "green",
     primary: 0xFF38FC9E,

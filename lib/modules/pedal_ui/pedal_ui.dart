@@ -6,6 +6,7 @@ import 'package:pedalbrain/modules/pedal/pedal.dart';
 import 'package:pedalbrain/modules/pedal_ui/bloc/pedal_ui_bloc.dart';
 import 'package:pedalbrain/modules/pedal_ui/knob_selection_menu.dart';
 import 'package:pedalbrain/modules/pedal_ui/knob_selection.dart';
+import 'package:pedalbrain/widgets/color_picker_modal.dart';
 import 'package:pedalbrain/widgets/name_change_modal.dart';
 
 class PedalUI extends StatelessWidget {
@@ -13,6 +14,7 @@ class PedalUI extends StatelessWidget {
   late PedalUIBloc _pedalUIBloc;
   final Function onLeave;
   final NameChangeModal nameChangeModal = NameChangeModal();
+  final ColorPickerModal colorPickerModal = ColorPickerModal();
 
   PedalUI({
     Key? key,
@@ -53,6 +55,8 @@ class PedalUI extends StatelessWidget {
             context: context,
             initialName: pedalUIBloc.state.pedalData!.name,
             onChanged: (value) => pedalUIBloc.renamePedal(value));
+      case "color":
+        return colorPickerModal.show(context: context, onChanged: () {});
       case "addKnob":
         return _pedalUIBloc.addKnob();
       default:
