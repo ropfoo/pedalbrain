@@ -4,7 +4,6 @@ import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/models/position.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_bloc.dart';
-import 'package:pedalbrain/modules/pedal/bloc/pedal_event.dart';
 import 'package:pedalbrain/widgets/circle_button.dart';
 
 class Pedal extends StatelessWidget {
@@ -16,7 +15,7 @@ class Pedal extends StatelessWidget {
 
   final Widget resizeSVG = SvgPicture.asset(
     'assets/icons/resize.svg',
-    semanticsLabel: 'Acme Logo',
+    semanticsLabel: 'reseize icon',
     color: Colors.white,
     width: 25,
     height: 25,
@@ -27,41 +26,36 @@ class Pedal extends StatelessWidget {
     final _pedalBloc = PedalBloc(initPedalData: initPedalData);
 
     return StreamBuilder(
-      stream: _pedalBloc.state.stream,
+      stream: _pedalBloc.stream,
       builder: (constex, snapshot) {
         double currXPos = _pedalBloc.state.pedalData.position.x;
         double currYPos = _pedalBloc.state.pedalData.position.y;
         double currWidth = _pedalBloc.state.pedalData.dimensions.width;
         double currHeight = _pedalBloc.state.pedalData.dimensions.height;
+        bool isListPreview = _pedalBloc.state.pedalData.isListPreview;
 
         return Positioned(
-          left: currXPos,
+          left: isListPreview ? null : currXPos,
           top: currYPos,
+          right: isListPreview ? 10 : null,
           child: Transform.scale(
+            alignment: isListPreview ? Alignment.topRight : null,
+            origin: isListPreview ? const Offset(0, 20) : null,
             scale: scale,
             child: Column(
               children: [
                 GestureDetector(
                   onPanUpdate: (tapInfo) {
                     if (_pedalBloc.state.pedalData.isEditable) {
-                      _pedalBloc.event.sink.add(
-                        PedalEventType(
-                          action: PedalAction.upatePos,
-                          payload: PedalPayload(
-                            newPos: Position(
-                              x: currXPos + tapInfo.delta.dx,
-                              y: currYPos + tapInfo.delta.dy,
-                            ),
-                          ),
+                      _pedalBloc.updatePos(
+                        Position(
+                          x: currXPos + tapInfo.delta.dx,
+                          y: currYPos + tapInfo.delta.dy,
                         ),
                       );
                     }
                   },
-                  onTap: () => _pedalBloc.event.sink.add(
-                    PedalEventType(
-                      action: PedalAction.toggleEditable,
-                    ),
-                  ),
+                  onTap: () => _pedalBloc.toggleEditable(),
                   child: Stack(
                     children: [
                       if (_pedalBloc.state.pedalData.isEditable)
@@ -120,15 +114,10 @@ class Pedal extends StatelessWidget {
                   child: _pedalBloc.state.pedalData.isEditable
                       ? GestureDetector(
                           onPanUpdate: (tapInfo) {
-                            _pedalBloc.event.sink.add(
-                              PedalEventType(
-                                action: PedalAction.updateDimesnions,
-                                payload: PedalPayload(
-                                  newDimensions: Dimensions(
-                                    width: currWidth + tapInfo.delta.dx,
-                                    height: currHeight + tapInfo.delta.dy,
-                                  ),
-                                ),
+                            _pedalBloc.updateDimensions(
+                              Dimensions(
+                                width: currWidth + tapInfo.delta.dx,
+                                height: currHeight + tapInfo.delta.dy,
                               ),
                             );
 

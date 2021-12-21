@@ -3,8 +3,8 @@ import 'package:pedalbrain/modules/pedal_list/bloc/pedal_list_state.dart';
 import 'package:rxdart/rxdart.dart';
 
 class PedalListBloc {
-  PedalListState state = PedalListState(listData: []);
-  final BehaviorSubject<PedalListState> _subjectPedalList =
+  var state = PedalListState(listData: []);
+  final _subjectPedalList =
       BehaviorSubject<PedalListState>.seeded(PedalListState(listData: []));
 
   PedalListBloc() {

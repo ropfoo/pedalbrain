@@ -1,40 +1,40 @@
 import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/models/position.dart';
-import 'package:pedalbrain/modules/pedal/bloc/pedal_event.dart';
+import 'package:pedalbrain/modules/knob/knob.dart';
 import 'package:pedalbrain/modules/pedal/bloc/pedal_state.dart';
+import 'package:rxdart/subjects.dart';
 
 class PedalBloc {
   final PedalData initPedalData;
-  final state = PedalState();
-  final event = PedalEvent();
+  var state = PedalState();
+  final _subjectPedal = BehaviorSubject<PedalState>.seeded(PedalState());
+
+  Stream<PedalState> get stream => _subjectPedal.stream;
+  PedalState get current => _subjectPedal.value;
 
   PedalBloc({required this.initPedalData}) {
     state.pedalData = initPedalData;
+    _subjectPedal.add(state);
+  }
 
-    event.stream.listen((event) {
-      switch (event.action) {
-        case PedalAction.upatePos:
-          state.pedalData.position =
-              event.payload?.newPos ?? Position(x: 0, y: 0);
-          break;
+  void updatePos(Position newPos) {
+    state.pedalData.position = newPos;
+    _subjectPedal.add(state);
+  }
 
-        case PedalAction.updateDimesnions:
-          state.pedalData.dimensions = event.payload?.newDimensions ??
-              Dimensions(width: 200, height: 300);
-          break;
+  void updateDimensions(Dimensions newDimensions) {
+    state.pedalData.dimensions = newDimensions;
+    _subjectPedal.add(state);
+  }
 
-        case PedalAction.setKnobs:
-          state.pedalData.knobs = event.payload?.newKnobs ?? [];
-          break;
+  void setKnobs(List<Knob> newKnobs) {
+    state.pedalData.knobs = newKnobs;
+    _subjectPedal.add(state);
+  }
 
-        case PedalAction.toggleEditable:
-          state.pedalData.isEditable = !state.pedalData.isEditable;
-          break;
-
-        default:
-      }
-      state.sink.add(state.pedalData);
-    });
+  void toggleEditable() {
+    state.pedalData.isEditable = !state.pedalData.isEditable;
+    _subjectPedal.add(state);
   }
 }

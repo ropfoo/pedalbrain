@@ -69,7 +69,6 @@ class PedalUI extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     _pedalUIBloc = PedalUIBloc(initPedalData);
-    initPedalData.position = Position(x: 25, y: 0);
     return WillPopScope(
       onWillPop: () => _navigateBack(context),
       child: StreamBuilder(

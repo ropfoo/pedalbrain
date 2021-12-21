@@ -12,6 +12,7 @@ class PedalData {
   String name = 'Pedal';
   late ColorGroupType color;
   bool isEditable = false;
+  bool isListPreview = false;
 
   Map<String, dynamic> toJson() => {
         'name': name,
@@ -39,13 +40,15 @@ class PedalData {
     return knobsData;
   }
 
-  PedalData(
-      {required this.dimensions,
-      required this.knobs,
-      required this.position,
-      required this.name,
-      required this.isEditable,
-      required String color}) {
+  PedalData({
+    required this.dimensions,
+    required this.knobs,
+    required this.position,
+    required this.name,
+    required this.isEditable,
+    required this.isListPreview,
+    required String color,
+  }) {
     this.color = ColorGroup.getColor(color);
   }
 

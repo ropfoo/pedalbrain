@@ -16,7 +16,8 @@ class PedalListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    pedalData.position = Position(x: 0, y: -100);
+    pedalData.position = Position(x: 0, y: 0);
+    pedalData.isListPreview = true;
     return Container(
       height: 145,
       alignment: Alignment.topLeft,
@@ -25,35 +26,30 @@ class PedalListItem extends StatelessWidget {
         style: TextButton.styleFrom(
           padding: EdgeInsets.zero,
         ),
-        onPressed: () => Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => PedalUIScreen(
-              pedalData: pedalData,
-              onLeave: onLeave,
+        onPressed: () {
+          pedalData.isListPreview = false;
+          pedalData.position = Position(x: 100, y: 50);
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => PedalUIScreen(
+                pedalData: pedalData,
+                onLeave: onLeave,
+              ),
             ),
-          ),
-        ),
+          );
+        },
         child: Stack(children: [
           Positioned(
             height: 120,
-            width: 500,
+            width: MediaQuery.of(context).size.width + 10,
             child: PedalListItemGradient(
               pedalData: pedalData,
             ),
           ),
-          Positioned(
-            width: pedalData.dimensions.width,
-            height: pedalData.dimensions.height,
-            right: 0,
-            child: Stack(
-              children: [
-                Pedal(
-                  initPedalData: pedalData,
-                  scale: .35,
-                ),
-              ],
-            ),
+          Pedal(
+            initPedalData: pedalData,
+            scale: .35,
           ),
         ]),
       ),
@@ -64,7 +60,8 @@ class PedalListItem extends StatelessWidget {
 class PedalListItemGradient extends StatelessWidget {
   final PedalData pedalData;
 
-  PedalListItemGradient({required this.pedalData});
+  const PedalListItemGradient({Key? key, required this.pedalData})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {

@@ -51,8 +51,6 @@ class PedalUIBloc {
 
     var data = state.pedalData?.toJson();
 
-    print(data);
-
     if (data != null) pedalDataDoc.update(data);
   }
 

@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:pedalbrain/models/dimensions.dart';
 import 'package:pedalbrain/models/pedal_data.dart';
 import 'package:pedalbrain/models/position.dart';
@@ -11,13 +9,7 @@ class PedalState {
     position: Position(x: 0, y: 0),
     name: 'Pedal',
     isEditable: false,
+    isListPreview: false,
     color: "orange",
   );
-
-  final _stateController = StreamController<PedalData>.broadcast();
-
-  StreamSink<PedalData> get sink => _stateController.sink;
-  Stream<PedalData> get stream => _stateController.stream;
-
-  dissolve() => _stateController.close();
 }
